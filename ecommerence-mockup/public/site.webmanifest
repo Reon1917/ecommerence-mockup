@@ -1,0 +1,26 @@
+{
+  "name": "Helio Ring - Advanced Health Tracking",
+  "short_name": "Helio",
+  "description": "Revolutionary health monitoring technology in a sleek ring design",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2B2B2B",
+  "theme_color": "#B08D57",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo/helio-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo/helio-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "lifestyle"],
+  "lang": "en-US"
+} 
