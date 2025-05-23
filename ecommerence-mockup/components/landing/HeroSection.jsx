@@ -8,10 +8,10 @@ import { Heart, Activity, Droplets, Zap, Star, Users } from "lucide-react";
 
 const HeroSection = () => {
   const healthMetrics = [
-    { icon: Heart, label: "Heart Rate", value: "72 BPM", color: "text-red-500" },
-    { icon: Activity, label: "Blood Pressure", value: "120/80", color: "text-blue-500" },
-    { icon: Droplets, label: "Blood Oxygen", value: "98%", color: "text-green-500" },
-    { icon: Zap, label: "Energy Level", value: "High", color: "text-yellow-500" },
+    { icon: Heart, label: "Heart Rate", value: "72 BPM", color: "text-gold-500" },
+    { icon: Activity, label: "Blood Pressure", value: "120/80", color: "text-gold-400" },
+    { icon: Droplets, label: "Blood Oxygen", value: "98%", color: "text-gold-600" },
+    { icon: Zap, label: "Energy Level", value: "High", color: "text-gold-300" },
   ];
 
   const socialProof = [
@@ -20,12 +20,12 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 overflow-hidden">
-      {/* Background Elements */}
+    <section className="relative min-h-screen bg-gradient-to-br from-charcoal-800 via-charcoal-700 to-charcoal-900 overflow-hidden">
+      {/* Background Elements - Monochromatic with Metallic Hints */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-2000"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-charcoal-600 to-charcoal-500 rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full mix-blend-overlay filter blur-xl opacity-10 animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-gradient-to-r from-charcoal-500 to-charcoal-400 rounded-full mix-blend-overlay filter blur-xl opacity-15 animate-pulse delay-2000"></div>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
@@ -46,10 +46,10 @@ const HeroSection = () => {
             >
               {socialProof.map((proof, index) => (
                 <div key={proof.label} className="flex items-center space-x-2 text-sm">
-                  <proof.icon className="h-4 w-4 text-blue-600" />
+                  <proof.icon className="h-4 w-4 text-gold-500" />
                   <div>
-                    <span className="font-bold text-gray-900">{proof.label}</span>
-                    <span className="text-gray-600 ml-1">{proof.subtitle}</span>
+                    <span className="font-bold text-charcoal-50">{proof.label}</span>
+                    <span className="text-charcoal-200 ml-1">{proof.subtitle}</span>
                   </div>
                 </div>
               ))}
@@ -60,12 +60,12 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-200">
+              <Badge className="mb-4 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 hover:from-gold-600 hover:to-gold-500 border-none shadow-gold">
                 🚀 Revolutionary Health Technology
               </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-5xl lg:text-6xl font-bold text-charcoal-50 leading-tight">
                 Meet the{" "}
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent">
                   Helio Ring
                 </span>
               </h1>
@@ -75,7 +75,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-xl text-gray-600 leading-relaxed"
+              className="text-xl text-charcoal-200 leading-relaxed"
             >
               Join thousands who've transformed their health with advanced tracking technology 
               in a sleek, comfortable ring. Monitor your heart rate, blood pressure, oxygen levels, 
@@ -88,11 +88,8 @@ const HeroSection = () => {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3">
+              <Button size="lg" className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 text-lg px-8 py-3 shadow-gold-lg border-none">
                 Shop Now - Starting at $199
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-3">
-                Watch Demo
               </Button>
             </motion.div>
 
@@ -109,13 +106,13 @@ const HeroSection = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + index * 0.1, duration: 0.4 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-200 shadow-sm"
+                  className="bg-charcoal-700/80 backdrop-blur-sm rounded-lg p-4 border border-charcoal-600 shadow-charcoal hover:shadow-charcoal-lg transition-all duration-300 hover:bg-charcoal-600/80"
                 >
                   <div className="flex items-center space-x-3">
                     <metric.icon className={`h-5 w-5 ${metric.color}`} />
                     <div>
-                      <div className="text-sm text-gray-600">{metric.label}</div>
-                      <div className="font-semibold text-gray-900">{metric.value}</div>
+                      <div className="text-sm text-charcoal-300">{metric.label}</div>
+                      <div className="font-semibold text-charcoal-50">{metric.value}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -143,7 +140,7 @@ const HeroSection = () => {
                 alt="Person using Helio Ring to monitor health"
                 width={600}
                 height={600}
-                className="w-full h-auto max-w-lg mx-auto drop-shadow-2xl rounded-2xl"
+                className="w-full h-auto max-w-lg mx-auto drop-shadow-2xl rounded-2xl border border-charcoal-600"
                 priority
               />
               
@@ -152,11 +149,11 @@ const HeroSection = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2, duration: 0.5 }}
-                className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg"
+                className="absolute top-4 left-4 bg-charcoal-700/90 backdrop-blur-sm rounded-lg p-3 shadow-charcoal-lg border border-charcoal-600"
               >
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-gray-900">Live Monitoring</span>
+                  <div className="w-3 h-3 bg-gold-500 rounded-full animate-pulse shadow-gold"></div>
+                  <span className="text-sm font-medium text-charcoal-50">Live Monitoring</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -172,9 +169,9 @@ const HeroSection = () => {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute -top-6 -right-6 bg-white rounded-full p-3 shadow-lg border border-gray-200"
+              className="absolute -top-6 -right-6 bg-charcoal-700 rounded-full p-3 shadow-charcoal-lg border border-charcoal-600"
             >
-              <Heart className="h-5 w-5 text-red-500" />
+              <Heart className="h-5 w-5 text-gold-500" />
             </motion.div>
 
             <motion.div
@@ -188,9 +185,9 @@ const HeroSection = () => {
                 ease: "easeInOut",
                 delay: 1
               }}
-              className="absolute -bottom-6 -left-6 bg-white rounded-full p-3 shadow-lg border border-gray-200"
+              className="absolute -bottom-6 -left-6 bg-charcoal-700 rounded-full p-3 shadow-charcoal-lg border border-charcoal-600"
             >
-              <Activity className="h-5 w-5 text-blue-500" />
+              <Activity className="h-5 w-5 text-gold-400" />
             </motion.div>
           </motion.div>
         </div>

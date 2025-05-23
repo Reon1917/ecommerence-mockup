@@ -17,15 +17,15 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+    <nav className="fixed top-0 w-full z-50 bg-charcoal-800/90 backdrop-blur-md border-b border-charcoal-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">H</span>
+            <div className="w-8 h-8 bg-gradient-gold rounded-full flex items-center justify-center shadow-gold">
+              <span className="text-charcoal-800 font-bold text-sm">H</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">Helio</span>
+            <span className="text-xl font-bold text-charcoal-50">Helio</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -34,7 +34,7 @@ const Navbar = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 font-medium"
+                className="text-charcoal-200 hover:text-gold-400 transition-colors duration-200 font-medium"
               >
                 {item.label}
               </Link>
@@ -43,10 +43,10 @@ const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-charcoal-400 text-charcoal-100 hover:bg-charcoal-700 hover:text-charcoal-50 hover:border-gold-500">
               Learn More
             </Button>
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 shadow-gold border-none">
               Shop Now
             </Button>
           </div>
@@ -54,18 +54,18 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-charcoal-100 hover:bg-charcoal-700">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-charcoal-800 border-charcoal-600">
               <div className="flex flex-col space-y-6 mt-6">
                 {/* Mobile Logo */}
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">H</span>
+                  <div className="w-8 h-8 bg-gradient-gold rounded-full flex items-center justify-center shadow-gold">
+                    <span className="text-charcoal-800 font-bold text-sm">H</span>
                   </div>
-                  <span className="text-xl font-bold text-gray-900">Helio</span>
+                  <span className="text-xl font-bold text-charcoal-50">Helio</span>
                 </div>
 
                 {/* Mobile Navigation */}
@@ -74,7 +74,7 @@ const Navbar = () => {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="text-gray-600 hover:text-blue-600 transition-colors duration-200 font-medium text-lg"
+                      className="text-charcoal-200 hover:text-gold-400 transition-colors duration-200 font-medium text-lg"
                       onClick={() => setIsOpen(false)}
                     >
                       {item.label}
@@ -83,11 +83,11 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile CTA */}
-                <div className="flex flex-col space-y-3 pt-6 border-t border-gray-200">
-                  <Button variant="outline" className="w-full">
+                <div className="flex flex-col space-y-3 pt-6 border-t border-charcoal-600">
+                  <Button variant="outline" className="w-full border-charcoal-400 text-charcoal-100 hover:bg-charcoal-700 hover:text-charcoal-50">
                     Learn More
                   </Button>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button className="w-full bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 border-none">
                     Shop Now
                   </Button>
                 </div>

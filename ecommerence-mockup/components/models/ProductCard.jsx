@@ -45,15 +45,15 @@ const ProductCard = ({ product }) => {
       onHoverEnd={() => setIsHovered(false)}
       className="group h-full"
     >
-      <Card className="relative overflow-hidden bg-white border-0 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+      <Card className="relative overflow-hidden bg-charcoal-100/80 backdrop-blur-sm border-charcoal-300 rounded-2xl shadow-charcoal hover:shadow-charcoal-lg hover:border-gold-400 transition-all duration-300 h-full flex flex-col">
         {/* Subtle Glow Effect */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ 
-            opacity: isHovered ? 0.1 : 0,
+            opacity: isHovered ? 0.15 : 0,
           }}
           transition={{ duration: 0.3 }}
-          className="absolute -inset-px bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl -z-10"
+          className="absolute -inset-px bg-gradient-gold rounded-2xl -z-10"
         />
 
         {/* Popular Badge - Minimal */}
@@ -64,14 +64,14 @@ const ProductCard = ({ product }) => {
             transition={{ delay: 0.2 }}
             className="absolute top-4 left-4 z-10"
           >
-            <Badge className="bg-blue-600 text-white px-3 py-1 text-xs font-medium rounded-full">
+            <Badge className="bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 px-3 py-1 text-xs font-medium rounded-full border-none shadow-gold">
               Most Popular
             </Badge>
           </motion.div>
         )}
 
         {/* Product Image Section - Flush with card */}
-        <div className="relative h-72 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-2xl">
+        <div className="relative h-72 bg-gradient-to-br from-charcoal-50 to-charcoal-100 overflow-hidden rounded-t-2xl">
           <motion.div
             animate={{ 
               scale: isHovered ? 1.02 : 1,
@@ -100,9 +100,9 @@ const ProductCard = ({ product }) => {
                   className="absolute inset-0 flex items-center justify-center"
                 >
                   {imageError ? (
-                    <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
-                      <ImageIcon className="w-16 h-16 mb-3 text-gray-300" />
-                      <p className="text-sm font-medium text-center text-gray-500">
+                    <div className="flex flex-col items-center justify-center w-full h-full text-charcoal-400">
+                      <ImageIcon className="w-16 h-16 mb-3 text-charcoal-300" />
+                      <p className="text-sm font-medium text-center text-charcoal-500">
                         {product.colors[selectedColor].name}
                       </p>
                     </div>
@@ -127,7 +127,7 @@ const ProductCard = ({ product }) => {
             transition={{ delay: 0.3 }}
             className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"
           >
-            <div className="flex space-x-2 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm">
+            <div className="flex space-x-2 bg-charcoal-700/80 backdrop-blur-sm rounded-full p-2 shadow-charcoal border border-charcoal-600">
               {product.colors.map((color, index) => (
                 <motion.button
                   key={index}
@@ -136,8 +136,8 @@ const ProductCard = ({ product }) => {
                   whileTap={{ scale: 0.95 }}
                   className={`relative w-8 h-8 rounded-full border-2 transition-all duration-200 ${
                     selectedColor === index 
-                      ? 'border-blue-500 ring-2 ring-blue-200' 
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-gold-500 ring-2 ring-gold-400/30' 
+                      : 'border-charcoal-400 hover:border-charcoal-300'
                   }`}
                   style={{ backgroundColor: color.hex }}
                 >
@@ -148,7 +148,7 @@ const ProductCard = ({ product }) => {
                       transition={{ duration: 0.2 }}
                       className="absolute inset-0 rounded-full flex items-center justify-center"
                     >
-                      <CheckCircle className="w-4 h-4 text-white drop-shadow-sm" />
+                      <CheckCircle className="w-4 h-4 text-charcoal-50 drop-shadow-sm" />
                     </motion.div>
                   )}
                 </motion.button>
@@ -166,16 +166,16 @@ const ProductCard = ({ product }) => {
             transition={{ delay: 0.1 }}
             className="mb-4"
           >
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{product.name}</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
+            <h3 className="text-xl font-semibold text-charcoal-800 mb-2">{product.name}</h3>
+            <p className="text-charcoal-600 text-sm leading-relaxed">{product.description}</p>
             <motion.div 
               key={selectedColor}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="mt-2 text-xs text-gray-500"
+              className="mt-2 text-xs text-charcoal-500"
             >
-              Color: <span className="font-medium text-gray-700">{product.colors[selectedColor].name}</span>
+              Color: <span className="font-medium text-charcoal-700">{product.colors[selectedColor].name}</span>
             </motion.div>
           </motion.div>
 
@@ -193,76 +193,72 @@ const ProductCard = ({ product }) => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + index * 0.05 }}
-                  className="flex items-center space-x-2 text-xs text-gray-600"
+                  className="flex items-center space-x-2 text-xs text-charcoal-600"
                 >
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gold-500"></div>
                   <span>{feature.name}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Specifications - Clean */}
+          {/* Rating & Reviews */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="flex items-center space-x-3 mb-4"
+          >
+            <div className="flex items-center space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className={`w-4 h-4 ${
+                    i < Math.floor(product.rating) 
+                      ? 'text-gold-500 fill-current' 
+                      : 'text-charcoal-300'
+                  }`} 
+                />
+              ))}
+            </div>
+            <span className="text-sm text-charcoal-600">
+              {product.rating} ({product.reviews.toLocaleString()} reviews)
+            </span>
+          </motion.div>
+
+          {/* Pricing - Minimal & Clean */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-6 flex-1"
+            className="mb-6"
           >
-            <div className="space-y-2">
-              {product.specs.slice(0, 3).map((spec, index) => (
-                <motion.div
-                  key={spec.label}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + index * 0.03 }}
-                  className="flex justify-between items-center text-sm"
-                >
-                  <span className="text-gray-500">{spec.label}</span>
-                  <span className="font-medium text-gray-900">{spec.value}</span>
-                </motion.div>
-              ))}
+            <div className="flex items-baseline space-x-2">
+              <span className="text-2xl font-bold text-charcoal-800">${product.price}</span>
+              {product.originalPrice && (
+                <span className="text-sm text-charcoal-500 line-through">${product.originalPrice}</span>
+              )}
             </div>
+            {product.originalPrice && (
+              <div className="text-xs text-gold-600 font-medium mt-1">
+                Save ${product.originalPrice - product.price}
+              </div>
+            )}
           </motion.div>
 
-          {/* Pricing and CTA - Aligned bottom */}
+          {/* CTA Button - Spacer Auto Push */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-auto space-y-4"
+            transition={{ delay: 0.35 }}
+            className="mt-auto"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-2xl font-semibold text-gray-900">${product.price}</div>
-                {product.originalPrice && (
-                  <div className="text-sm text-gray-500 line-through">${product.originalPrice}</div>
-                )}
-              </div>
-              {product.rating && (
-                <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="text-sm font-medium text-gray-700">{product.rating}</span>
-                  <span className="text-xs text-gray-500">({product.reviews})</span>
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <Button 
-                size="lg" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-colors duration-200"
-              >
-                Add to Cart
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="w-full border border-gray-200 text-gray-700 hover:bg-gray-50 py-3 rounded-xl font-medium transition-colors duration-200"
-              >
-                Learn More
-              </Button>
-            </div>
+            <Button 
+              className="w-full bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 font-semibold shadow-gold hover:shadow-gold-lg transition-all duration-300 border-none"
+              size="lg"
+            >
+              Add to Cart
+            </Button>
           </motion.div>
         </div>
       </Card>

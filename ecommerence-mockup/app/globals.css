@@ -2,114 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
+    /* Monochromatic Elegance & Metallic Touch Palette */
+    
+    /* Deep Charcoal Primary */
+    --background: 0 0% 96.5%; /* Soft Off-White #F5F5F5 */
+    --foreground: 0 0% 12%; /* Deep Charcoal #1F1F1F */
 
-    --background: 0 0% 100%;
+    /* Card System */
+    --card: 0 0% 91%; /* Pale Silver #E8E8E8 */
+    --card-foreground: 0 0% 12%; /* Deep Charcoal */
 
-    --foreground: 222.2 84% 4.9%;
+    /* Popover */
+    --popover: 0 0% 96.5%; /* Soft Off-White */
+    --popover-foreground: 0 0% 12%; /* Deep Charcoal */
 
-    --card: 0 0% 100%;
+    /* Primary (Gold Accent) */
+    --primary: 42 36% 52%; /* Brushed Gold #B08D57 */
+    --primary-foreground: 0 0% 96.5%; /* Soft Off-White */
 
-    --card-foreground: 222.2 84% 4.9%;
+    /* Secondary (Cool Greys) */
+    --secondary: 0 0% 82%; /* Light Grey #D1D1D1 */
+    --secondary-foreground: 0 0% 17%; /* Dark Charcoal #2B2B2B */
 
-    --popover: 0 0% 100%;
+    /* Muted */
+    --muted: 0 0% 91%; /* Pale Silver #E8E8E8 */
+    --muted-foreground: 0 0% 48%; /* Medium Grey #7A7A7A */
 
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Accent (Alternative Gold) */
+    --accent: 48 40% 58%; /* Warm Bronze #C9AE5D */
+    --accent-foreground: 0 0% 12%; /* Deep Charcoal */
 
-    --primary: 222.2 47.4% 11.2%;
+    /* System Colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 96.5%;
 
-    --primary-foreground: 210 40% 98%;
+    /* Borders & Inputs */
+    --border: 0 0% 82%; /* Light Grey #D1D1D1 */
+    --input: 0 0% 91%; /* Pale Silver */
+    --ring: 42 36% 52%; /* Brushed Gold focus ring */
 
-    --secondary: 210 40% 96.1%;
+    /* Chart Colors (Monochromatic with gold accents) */
+    --chart-1: 42 36% 52%; /* Brushed Gold */
+    --chart-2: 0 0% 48%; /* Medium Grey */
+    --chart-3: 0 0% 17%; /* Dark Charcoal */
+    --chart-4: 48 40% 58%; /* Warm Bronze */
+    --chart-5: 0 0% 65%; /* Light Medium Grey */
 
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-
-    --input: 214.3 31.8% 91.4%;
-
-    --ring: 222.2 84% 4.9%;
-
-    --chart-1: 12 76% 61%;
-
-    --chart-2: 173 58% 39%;
-
-    --chart-3: 197 37% 24%;
-
-    --chart-4: 43 74% 66%;
-
-    --chart-5: 27 87% 67%;
-
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
+
   .dark {
+    /* Dark Mode - Deep Charcoal Dominant */
+    --background: 0 0% 12%; /* Deep Charcoal #1F1F1F */
+    --foreground: 0 0% 96.5%; /* Soft Off-White */
 
-    --background: 222.2 84% 4.9%;
+    --card: 0 0% 17%; /* Dark Charcoal #2B2B2B */
+    --card-foreground: 0 0% 96.5%;
 
-    --foreground: 210 40% 98%;
+    --popover: 0 0% 12%; /* Deep Charcoal */
+    --popover-foreground: 0 0% 96.5%;
 
-    --card: 222.2 84% 4.9%;
+    --primary: 42 36% 52%; /* Brushed Gold */
+    --primary-foreground: 0 0% 12%; /* Deep Charcoal */
 
-    --card-foreground: 210 40% 98%;
+    --secondary: 0 0% 17%; /* Dark Charcoal */
+    --secondary-foreground: 0 0% 82%; /* Light Grey */
 
-    --popover: 222.2 84% 4.9%;
+    --muted: 0 0% 17%; /* Dark Charcoal */
+    --muted-foreground: 0 0% 65%; /* Light Medium Grey */
 
-    --popover-foreground: 210 40% 98%;
+    --accent: 48 40% 58%; /* Warm Bronze */
+    --accent-foreground: 0 0% 96.5%;
 
-    --primary: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 96.5%;
 
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --border: 0 0% 17%; /* Dark Charcoal */
+    --input: 0 0% 17%; /* Dark Charcoal */
+    --ring: 42 36% 52%; /* Brushed Gold */
 
-    --secondary: 217.2 32.6% 17.5%;
-
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-
-    --input: 217.2 32.6% 17.5%;
-
-    --ring: 212.7 26.8% 83.9%;
-
-    --chart-1: 220 70% 50%;
-
-    --chart-2: 160 60% 45%;
-
-    --chart-3: 30 80% 55%;
-
-    --chart-4: 280 65% 60%;
-
-    --chart-5: 340 75% 55%
+    --chart-1: 42 36% 52%; /* Brushed Gold */
+    --chart-2: 0 0% 65%; /* Light Medium Grey */
+    --chart-3: 48 40% 58%; /* Warm Bronze */
+    --chart-4: 0 0% 82%; /* Light Grey */
+    --chart-5: 0 0% 48%; /* Medium Grey */
   }
 }
-
-
 
 @layer base {
   * {
@@ -117,5 +97,52 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Metallic Gradients */
+@layer utilities {
+  .gradient-gold {
+    background: linear-gradient(135deg, #B08D57 0%, #C9AE5D 50%, #B08D57 100%);
+  }
+  
+  .gradient-charcoal {
+    background: linear-gradient(135deg, #1F1F1F 0%, #2B2B2B 50%, #1F1F1F 100%);
+  }
+  
+  .gradient-silver {
+    background: linear-gradient(135deg, #D1D1D1 0%, #F5F5F5 50%, #E8E8E8 100%);
+  }
+  
+  .text-gold {
+    color: #B08D57;
+  }
+  
+  .text-bronze {
+    color: #C9AE5D;
+  }
+  
+  .text-charcoal {
+    color: #1F1F1F;
+  }
+  
+  .text-charcoal-light {
+    color: #2B2B2B;
+  }
+  
+  .bg-gold {
+    background-color: #B08D57;
+  }
+  
+  .bg-bronze {
+    background-color: #C9AE5D;
+  }
+  
+  .bg-charcoal {
+    background-color: #1F1F1F;
+  }
+  
+  .bg-charcoal-light {
+    background-color: #2B2B2B;
   }
 }
