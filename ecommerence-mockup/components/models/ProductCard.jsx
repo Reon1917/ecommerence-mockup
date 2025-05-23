@@ -37,10 +37,9 @@ const ProductCard = ({ product }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 1, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className="group h-full"
@@ -70,8 +69,8 @@ const ProductCard = ({ product }) => {
           </motion.div>
         )}
 
-        {/* Product Image Section - Flush with card */}
-        <div className="relative h-72 bg-gradient-to-br from-charcoal-50 to-charcoal-100 overflow-hidden rounded-t-2xl">
+        {/* Product Image Section - Completely flush with no borders */}
+        <div className="relative h-72 bg-gradient-to-br from-charcoal-50 to-charcoal-100 overflow-hidden">
           <motion.div
             animate={{ 
               scale: isHovered ? 1.02 : 1,
@@ -161,7 +160,7 @@ const ProductCard = ({ product }) => {
         <div className="p-6 flex-1 flex flex-col">
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="mb-4"
@@ -181,7 +180,7 @@ const ProductCard = ({ product }) => {
 
           {/* Key Features - Minimal */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="mb-4"
@@ -190,7 +189,7 @@ const ProductCard = ({ product }) => {
               {product.features.slice(0, 4).map((feature, index) => (
                 <motion.div
                   key={feature.name}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 1, x: 0 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + index * 0.05 }}
                   className="flex items-center space-x-2 text-xs text-charcoal-600"
@@ -204,7 +203,7 @@ const ProductCard = ({ product }) => {
 
           {/* Rating & Reviews */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
             className="flex items-center space-x-3 mb-4"
@@ -228,7 +227,7 @@ const ProductCard = ({ product }) => {
 
           {/* Pricing - Minimal & Clean */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="mb-6"
@@ -248,7 +247,7 @@ const ProductCard = ({ product }) => {
 
           {/* CTA Button - Spacer Auto Push */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
             className="mt-auto"
