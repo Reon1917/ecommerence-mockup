@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
 
   const handleColorChange = (index) => {
     setSelectedColor(index);
-    setImageError(false); // Reset error state when changing colors
+    setImageError(false);
   };
 
   const handleImageError = () => {
@@ -37,41 +37,50 @@ const ProductCard = ({ product }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5 }}
       viewport={{ once: true }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="group"
+      className="group h-full"
     >
-      <Card className="relative overflow-hidden bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
-        {/* Popular Badge */}
+      <Card className="relative overflow-hidden bg-white border-0 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+        {/* Subtle Glow Effect */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: isHovered ? 0.1 : 0,
+          }}
+          transition={{ duration: 0.3 }}
+          className="absolute -inset-px bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl -z-10"
+        />
+
+        {/* Popular Badge - Minimal */}
         {product.popular && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2 }}
             className="absolute top-4 left-4 z-10"
           >
-            <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 text-sm font-medium">
-              <Star className="w-3 h-3 mr-1" />
+            <Badge className="bg-blue-600 text-white px-3 py-1 text-xs font-medium rounded-full">
               Most Popular
             </Badge>
           </motion.div>
         )}
 
-        {/* Product Image Section */}
-        <div className="relative h-80 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+        {/* Product Image Section - Flush with card */}
+        <div className="relative h-72 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-2xl">
           <motion.div
             animate={{ 
-              scale: isHovered ? 1.05 : 1,
+              scale: isHovered ? 1.02 : 1,
             }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative h-full flex items-center justify-center"
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="relative h-full flex items-center justify-center p-6"
           >
-            {/* Image Container with Wipe Animation */}
-            <div className="relative w-64 h-64">
+            {/* Image Container - Full flush */}
+            <div className="relative w-full h-full max-w-64 max-h-64">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedColor}
@@ -85,195 +94,147 @@ const ProductCard = ({ product }) => {
                     clipPath: "inset(0 0% 0 100%)" 
                   }}
                   transition={{ 
-                    duration: 0.6, 
+                    duration: 0.4, 
                     ease: [0.25, 0.46, 0.45, 0.94] 
                   }}
                   className="absolute inset-0 flex items-center justify-center"
                 >
                   {imageError ? (
-                    // Fallback when image fails to load
                     <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
-                      <ImageIcon className="w-16 h-16 mb-2" />
-                      <p className="text-sm text-center">
+                      <ImageIcon className="w-16 h-16 mb-3 text-gray-300" />
+                      <p className="text-sm font-medium text-center text-gray-500">
                         {product.colors[selectedColor].name}
-                        <br />
-                        <span className="text-xs">Image loading...</span>
                       </p>
                     </div>
                   ) : (
-                    // Using regular img tag for debugging
                     <img
                       src={product.colors[selectedColor].image}
                       alt={`${product.name} in ${product.colors[selectedColor].name}`}
-                      className="w-56 h-56 object-contain drop-shadow-2xl"
+                      className="w-full h-full object-contain"
                       onError={handleImageError}
                       onLoad={() => console.log(`Image loaded: ${product.colors[selectedColor].image}`)}
                     />
                   )}
                 </motion.div>
               </AnimatePresence>
-              
-              {/* Floating Health Indicators */}
-              <motion.div
-                animate={{ 
-                  y: isHovered ? [-5, 5, -5] : [0, -3, 0],
-                  opacity: isHovered ? 1 : 0.7
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="absolute -top-4 -right-4 bg-white rounded-full p-2 shadow-lg z-10"
-              >
-                <Heart className="w-4 h-4 text-red-500" />
-              </motion.div>
-              
-              <motion.div
-                animate={{ 
-                  y: isHovered ? [5, -5, 5] : [0, 3, 0],
-                  opacity: isHovered ? 1 : 0.7
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity, 
-                  ease: "easeInOut",
-                  delay: 1
-                }}
-                className="absolute -bottom-4 -left-4 bg-white rounded-full p-2 shadow-lg z-10"
-              >
-                <Activity className="w-4 h-4 text-blue-500" />
-              </motion.div>
             </div>
           </motion.div>
 
-          {/* Color Selector */}
+          {/* Minimal Color Selector */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.3 }}
             className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"
           >
-            <div className="flex space-x-3 bg-white/95 backdrop-blur-sm rounded-full p-3 shadow-lg border border-gray-200">
+            <div className="flex space-x-2 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm">
               {product.colors.map((color, index) => (
                 <motion.button
                   key={index}
                   onClick={() => handleColorChange(index)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`relative w-10 h-10 rounded-full border-2 transition-all duration-300 ${
+                  className={`relative w-8 h-8 rounded-full border-2 transition-all duration-200 ${
                     selectedColor === index 
-                      ? 'border-blue-500 shadow-lg ring-2 ring-blue-200' 
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-blue-500 ring-2 ring-blue-200' 
+                      : 'border-gray-200 hover:border-gray-300'
                   }`}
                   style={{ backgroundColor: color.hex }}
                 >
                   {selectedColor === index && (
                     <motion.div
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
                       transition={{ duration: 0.2 }}
                       className="absolute inset-0 rounded-full flex items-center justify-center"
                     >
-                      <CheckCircle className="w-5 h-5 text-white drop-shadow-lg" />
+                      <CheckCircle className="w-4 h-4 text-white drop-shadow-sm" />
                     </motion.div>
                   )}
-                  
-                  {/* Color name tooltip */}
-                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <div className="bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                      {color.name}
-                    </div>
-                  </div>
                 </motion.button>
               ))}
             </div>
           </motion.div>
         </div>
 
-        {/* Product Details */}
-        <div className="p-6">
+        {/* Product Details - Minimal */}
+        <div className="p-6 flex-1 flex flex-col">
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.1 }}
             className="mb-4"
           >
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{product.name}</h3>
             <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
             <motion.div 
               key={selectedColor}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="mt-2 text-sm text-gray-500"
+              className="mt-2 text-xs text-gray-500"
             >
               Color: <span className="font-medium text-gray-700">{product.colors[selectedColor].name}</span>
-              {/* Debug info - remove this later */}
-              <div className="text-xs text-gray-400 mt-1">
-                Path: {product.colors[selectedColor].image}
-              </div>
             </motion.div>
           </motion.div>
 
-          {/* Key Features */}
+          {/* Key Features - Minimal */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-6"
+            transition={{ delay: 0.2 }}
+            className="mb-4"
           >
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               {product.features.slice(0, 4).map((feature, index) => (
                 <motion.div
                   key={feature.name}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="flex items-center space-x-2"
+                  transition={{ delay: 0.3 + index * 0.05 }}
+                  className="flex items-center space-x-2 text-xs text-gray-600"
                 >
-                  <feature.icon className={`w-4 h-4 ${feature.color}`} />
-                  <span className="text-xs text-gray-600">{feature.name}</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                  <span>{feature.name}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Specifications */}
+          {/* Specifications - Clean */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mb-6"
+            transition={{ delay: 0.3 }}
+            className="mb-6 flex-1"
           >
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Key Specs</h4>
             <div className="space-y-2">
-              {product.specs.map((spec, index) => (
+              {product.specs.slice(0, 3).map((spec, index) => (
                 <motion.div
                   key={spec.label}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + index * 0.05 }}
+                  transition={{ delay: 0.4 + index * 0.03 }}
                   className="flex justify-between items-center text-sm"
                 >
-                  <span className="text-gray-600">{spec.label}</span>
+                  <span className="text-gray-500">{spec.label}</span>
                   <span className="font-medium text-gray-900">{spec.value}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Pricing and CTA */}
+          {/* Pricing and CTA - Aligned bottom */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="space-y-4"
+            transition={{ delay: 0.4 }}
+            className="mt-auto space-y-4"
           >
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-3xl font-bold text-gray-900">${product.price}</div>
+                <div className="text-2xl font-semibold text-gray-900">${product.price}</div>
                 {product.originalPrice && (
                   <div className="text-sm text-gray-500 line-through">${product.originalPrice}</div>
                 )}
@@ -290,28 +251,20 @@ const ProductCard = ({ product }) => {
             <div className="flex flex-col space-y-2">
               <Button 
                 size="lg" 
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-3 transition-all duration-300"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-colors duration-200"
               >
                 Add to Cart
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 py-3 transition-all duration-300"
+                className="w-full border border-gray-200 text-gray-700 hover:bg-gray-50 py-3 rounded-xl font-medium transition-colors duration-200"
               >
                 Learn More
               </Button>
             </div>
           </motion.div>
         </div>
-
-        {/* Hover Overlay Effect */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 0.05 : 0 }}
-          transition={{ duration: 0.3 }}
-          className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 pointer-events-none"
-        />
       </Card>
     </motion.div>
   );
