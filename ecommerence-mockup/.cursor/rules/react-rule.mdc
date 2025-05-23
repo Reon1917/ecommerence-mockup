@@ -1,0 +1,260 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# React Usage Guidelines in a Next.js 15 Project (App Router)
+
+This document outlines rules and best practices for using React hooks like `useState` and `useEffect`, and for structuring your files within a Next.js 15 (App Router) application.
+
+## I. Understanding Server Components vs. Client Components
+
+Before diving into hooks, it's crucial to understand Next.js's Server and Client Component model:
+
+*   **Server Components (Default in App Router):**
+    *   Run on the server (or at build time).
+    *   Cannot use React hooks like `useState` or `useEffect` (as these are for client-side interactivity).
+    *   Cannot use browser-only APIs.
+    *   Ideal for fetching data, accessing backend resources, and reducing client-side JavaScript.
+    *   Rendered output is streamed to the client.
+*   **Client Components:**
+    *   Opt-in by adding the `"use client";` directive at the top of the file.
+    *   Are pre-rendered on the server (SSR/SSG) and then "hydrated" and made interactive on the client.
+    *   Can use `useState`, `useEffect`, and other React hooks.
+    *   Can use browser-only APIs and event listeners.
+    *   **Rule:** Keep Client Components as small and as far down the component tree (leaf nodes) as possible to minimize the client-side JavaScript bundle.
+
+## II. `useState` Hook
+
+`useState` is used to add state to your Client Components.
+
+### When to Use `useState`:
+
+1.  **Managing Component-Specific Interactive State:**
+    *   Use it for data that changes over time due to user interaction (e.g., form inputs, toggles, counters, modal visibility) and needs to trigger a re-render of that component or its children.
+    *   Example:
+        ```tsx
+        // app/components/Counter.tsx
+        "use client"; // Mark as a Client Component
+
+        import { useState } from "react";
+
+        export default function Counter() {
+          const [count, setCount] = useState(0);
+
+          return (
+            <div>
+              <p>Count: {count}</p>
+              <button onClick={() => setCount(count + 1)}>
+                Increment
+              </button>
+            </div>
+          );
+        }
+        ```
+
+2.  **Simple UI State:**
+    *   For managing the state of UI elements like dropdowns, accordions, or conditional rendering based on local changes within a Client Component.
+
+### When NOT to Use `useState` (Consider Alternatives):
+
+1.  **Derived State:**
+    *   If state can be calculated from existing props or other state variables, compute it directly during rendering instead of storing it in a separate state.
+    *   **Bad:** `const [fullName, setFullName] = useState(firstName + ' ' + lastName);` (if `firstName` and `lastName` are props/state)
+    *   **Good:** `const fullName = firstName + ' ' + lastName;`
+
+2.  **Global or Shared State Across Distant Components:**
+    *   For state that needs to be accessed and modified by multiple, deeply nested, or sibling components, `useState` with prop drilling becomes cumbersome.
+    *   **Alternatives:** React Context API, Zustand, Jotai, Redux Toolkit.
+
+3.  **Data That Doesn't Trigger Re-renders:**
+    *   If you need to store a mutable value that persists across renders but doesn't trigger a re-render when changed (e.g., managing a timer ID, a DOM element reference).
+    *   **Alternative:** `useRef`.
+
+4.  **In Server Components:**
+    *   `useState` **cannot** be used in Server Components. State in Server Components is typically derived from data fetching, route parameters, or search params.
+
+### Best Practices for `useState`:
+
+*   **Keep State Minimal:** Only store what's absolutely necessary for rendering and interactivity.
+*   **Group Related State:** If multiple state variables always change together, consider grouping them into an object or using `useReducer`.
+*   **Initialize Sensibly:** Provide meaningful initial values.
+
+## III. `useEffect` Hook
+
+`useEffect` is used to perform side effects in your Client Components. Side effects are operations that interact with the "outside world" (e.g., data fetching, subscriptions, manually changing the DOM).
+
+### When to Use `useEffect`:
+
+1.  **Data Fetching on the Client-Side (within Client Components):**
+    *   To fetch data after the component mounts or when certain dependencies change (e.g., fetching user-specific data after login, or re-fetching when a filter changes).
+    *   **Note:** For initial data load, prefer Server Components and `async/await` directly in them. `useEffect` is for client-side fetching *within* Client Components when server-side fetching isn't suitable or for subsequent fetches.
+    *   Example:
+        ```tsx
+        // app/components/UserProfile.tsx
+        "use client";
+
+        import { useState, useEffect } from "react";
+
+        interface User {
+          id: number;
+          name: string;
+        }
+
+        export default function UserProfile({ userId }: { userId: number }) {
+          const [user, setUser] = useState<User | null>(null);
+          const [loading, setLoading] = useState(true);
+
+          useEffect(() => {
+            async function fetchUser() {
+              if (!userId) return; // Avoid fetching if userId is not available
+
+              setLoading(true);
+              try {
+                const response = await fetch(
+                  `https://api.example.com/users/${userId}`,
+                );
+                if (!response.ok) {
+                  throw new Error("Failed to fetch user");
+                }
+                const data = await response.json();
+                setUser(data);
+              } catch (error) {
+                console.error("Error fetching user:", error);
+                setUser(null); // Or handle error state appropriately
+              } finally {
+                setLoading(false);
+              }
+            }
+
+            fetchUser();
+          }, [userId]); // Re-run if userId changes
+
+          if (loading) return <p>Loading user profile...</p>;
+          if (!user) return <p>No user data found or error fetching.</p>;
+
+          return <h1>{user.name}</h1>;
+        }
+        ```
+
+2.  **Setting up Subscriptions:**
+    *   Subscribing to external data sources (e.g., WebSockets, browser events like `resize` or `scroll`).
+    *   **Crucial:** Always return a cleanup function to unsubscribe and prevent memory leaks.
+
+3.  **Manually Changing the DOM (Use Sparingly):**
+    *   When you need to interact directly with the DOM outside of React's declarative model (e.g., integrating with a third-party DOM-based library).
+    *   **Alternative:** Prefer `useRef` to get direct DOM references when possible.
+
+4.  **Timers and Intervals:**
+    *   Setting up `setTimeout` or `setInterval`.
+    *   **Crucial:** Always clear timers in the cleanup function.
+
+### Key Principles for `useEffect`:
+
+1.  **Dependency Array:**
+    *   `[]` (empty array): Effect runs once after the initial render and cleans up on unmount.
+    *   `[dep1, dep2]`: Effect runs after initial render AND whenever `dep1` or `dep2` changes.
+    *   *No array (omitted)*: Effect runs after *every* render. **Strongly avoid this unless you have a very specific reason, as it often leads to infinite loops or performance issues.**
+
+2.  **Cleanup Function:**
+    *   Return a function from `useEffect` to clean up resources before the component unmounts or before the effect runs again due to dependency changes. This is vital for preventing memory leaks (e.g., unsubscribing, clearing timers).
+    *   Example:
+        ```tsx
+        useEffect(() => {
+          const handleResize = () => console.log("Window resized");
+          window.addEventListener("resize", handleResize);
+
+          // Cleanup function
+          return () => {
+            window.removeEventListener("resize", handleResize);
+          };
+        }, []); // Empty dependency array: runs once on mount, cleans up on unmount
+        ```
+
+### When NOT to Use `useEffect`:
+
+1.  **For Transformations or Calculations Based on Props/State:**
+    *   If you just need to compute something based on current props or state, do it directly in the component body during rendering. `useEffect` is for side effects, not pure computations.
+2.  **In Server Components:**
+    *   `useEffect` **cannot** be used in Server Components as it's a client-side hook.
+3.  **Setting State Based on Props Without a Real Side Effect (Anti-pattern):**
+    *   Often, this indicates a need to rethink component structure or derive state directly. If you *must* sync prop changes to state (e.g., resetting form state when an ID prop changes), ensure your dependency array is correct and you understand the implications.
+
+## IV. File Structure in Next.js 15 (App Router)
+
+Next.js (App Router) uses a convention-based file system for routing.
+
+### Core `app/` Directory Structure:
+
+*   **`app/layout.tsx` (Required):** The root layout, shared across all routes. Must define `<html>` and `<body>` tags.
+*   **`app/page.tsx` (Required):** The UI for the `/` route.
+*   **`app/loading.tsx` (Optional):** Loading UI for a route segment and its children (integrates with React Suspense).
+*   **`app/error.tsx` (Optional):** Error UI for a route segment and its children. Must be a Client Component (`"use client";`).
+*   **`app/not-found.tsx` (Optional):** UI for when `notFound()` is thrown or a URL doesn't match any defined routes.
+*   **`app/template.tsx` (Optional):** Similar to `layout.tsx`, but re-creates a new instance of the component on navigation, meaning state is not preserved across navigations (unlike layouts).
+*   **`app/default.tsx` (Optional):** Fallback UI for parallel routes when Next.js cannot determine the active state of a slot on initial load or after a full-page reload.
+
+### Routing and Organization:
+
+*   **Folders Define Routes:** `app/dashboard/settings/page.tsx` maps to `/dashboard/settings`.
+*   **Dynamic Segments:** `app/blog/[slug]/page.tsx` maps to `/blog/any-slug-value`.
+    *   Catch-all: `app/shop/[...categories]/page.tsx`
+    *   Optional Catch-all: `app/docs/[[...slug]]/page.tsx`
+*   **Route Groups `(groupName)/`:** Organize routes or apply layouts to segments without affecting the URL path (e.g., `app/(marketing)/about/page.tsx` maps to `/about`).
+*   **Private Folders `_folderName/`:** Opt-out a folder and its contents from routing. Useful for co-locating components, tests, or utility files specific to a route segment.
+
+### Common Organizational Directories (Conventions, not strict rules):
+
+*   **`app/components/` (or `src/components/` or co-located):**
+    *   **Global/Shared Components:** Place reusable UI components here (e.g., `Button.tsx`, `Modal.tsx`). These can be Server or Client Components.
+    *   **Co-location:** Place components specific to a route segment within that segment's folder, often in a `_components` or `components` subfolder (e.g., `app/dashboard/_components/DashboardChart.tsx`). This promotes modularity.
+    *   Clearly distinguish Server and Client Components, either by naming convention (e.g., `UserProfile.client.tsx`) or by ensuring the `"use client";` directive is present where needed.
+
+*   **`app/lib/` (or `src/lib/`):**
+    *   Utility functions, helper functions, data fetching logic (e.g., database queries, external API interactions if not directly in Server Components), constants, type definitions not specific to a single component.
+    *   Example: `app/lib/utils.ts`, `app/lib/data.ts` (for server-side data access functions).
+
+*   **`app/hooks/` (or `src/hooks/`):**
+    *   Custom React hooks (e.g., `useLocalStorage.ts`, `useFormValidation.ts`). These will primarily be used in Client Components.
+
+*   **`app/styles/` (or `src/styles/`):**
+    *   Global stylesheets (e.g., `globals.css`). Often used with Tailwind CSS configuration (`tailwind.config.js` at the root). CSS Modules (`.module.css`) are typically co-located with their respective components.
+
+*   **`app/api/` (Route Handlers):**
+    *   For creating backend API endpoints. Files are named `route.ts` (or `.js`).
+    *   Example: `app/api/submit-form/route.ts` handles requests to `/api/submit-form`.
+
+*   **`public/` (Root Directory):**
+    *   Static assets like images, fonts, `favicon.ico`, `robots.txt`. Accessed directly via the base URL (e.g., `/images/logo.png` for `public/images/logo.png`).
+
+*   **`src/` (Optional Root Directory):**
+    *   Many projects place the `app`, `components`, `lib`, etc., directories inside a `src/` folder for better organization, separating application code from configuration files at the project root.
+    *   Example: `src/app/`, `src/components/`, `src/lib/`. If you use `src/`, update your `tsconfig.json` and `jsconfig.json` paths accordingly.
+
+### File Naming Conventions:
+
+*   **Components:** PascalCase (e.g., `UserProfile.tsx`, `PrimaryButton.tsx`).
+*   **Route Files (pages, layouts, etc.):** lowercase (e.g., `page.tsx`, `layout.tsx`, `error.tsx`, `route.ts`).
+*   **Hooks:** camelCase with `use` prefix (e.g., `useAuth.ts`, `useDebounce.ts`).
+*   **Utilities/Libs:** camelCase or kebab-case (e.g., `formatDate.ts`, `api-client.ts`).
+
+## V. General Best Practices in Next.js 15 / React
+
+1.  **Default to Server Components:** Build UI with Server Components first. Only opt into Client Components (`"use client";`) when client-side interactivity, browser APIs, or React hooks like `useState` and `useEffect` are necessary.
+2.  **Keep Client Components Small and at the Leaves:** Isolate interactivity. Pass Server Components as `children` to Client Components where possible to minimize the client-side JavaScript bundle and leverage server rendering for static parts.
+3.  **Data Fetching Strategy:**
+    *   **Server Components:** Ideal for initial data fetching. Use `async/await` directly within them. Fetch data as close as possible to where it's used.
+    *   **Route Handlers (`app/api/.../route.ts`):** For creating API endpoints that can be called from Client Components (using `fetch` or libraries like SWR/React Query) or for server-to-server communication (e.g., webhooks).
+    *   **Client Components (`useEffect` or data fetching libraries):** For fetching data in response to client-side interactions, for real-time updates, or when data depends on client-only state. Libraries like SWR or TanStack Query (React Query) are highly recommended for client-side data fetching, caching, and synchronization.
+    *   **Server Actions:** For mutations (form submissions, data updates) from Client Components without manually creating API endpoints. Define them in Server Components or separate files (`"use server";` directive at the top of the file or top of the function).
+4.  **State Management:**
+    *   **Local State:** `useState` for component-specific state in Client Components.
+    *   **Shared Client State:** React Context for simple cases. For more complex global client state, consider libraries like Zustand, Jotai, or Redux Toolkit.
+    *   **URL State:** Use Next.js router (`useRouter`, `useSearchParams`, `usePathname` from `next/navigation`) to manage state that should be reflected in the URL (filters, pagination, tabs).
+5.  **Code Splitting:** Next.js handles code splitting automatically at the route level (each `page.tsx` is a split point). Dynamic imports (`next/dynamic`) can be used for further optimization, especially for large Client Components or libraries not needed on initial load.
+6.  **Streaming with Suspense:** Leverage React Suspense with Server Components to stream UI parts as they become ready, improving perceived performance. Use `loading.tsx` for route-level loading states.
+
+---
+
+
+By adhering to these guidelines, you can build robust, performant, and maintainable Next.js 15 applications using the App Router and React effectively. Always refer to the official Next.js documentation for the most current and detailed information.
