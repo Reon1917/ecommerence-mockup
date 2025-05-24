@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
@@ -69,39 +69,98 @@ const ProductShowcase = () => {
   const [imageError, setImageError] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+  const [preloadedImages, setPreloadedImages] = useState(new Set());
   
   const { addItem } = useCart();
 
-  // Wipe animation variants for color switching
+  // Preload all color variant images on component mount
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = featuredProduct.colors.map((color, index) => {
+        return new Promise((resolve, reject) => {
+          const img = new window.Image();
+          img.onload = () => {
+            setPreloadedImages(prev => new Set([...prev, index]));
+            resolve(index);
+          };
+          img.onerror = reject;
+          img.src = color.image;
+        });
+      });
+
+      try {
+        await Promise.allSettled(imagePromises);
+      } catch (error) {
+        console.log('Some images failed to preload:', error);
+      }
+    };
+
+    preloadImages();
+  }, [featuredProduct.colors]);
+
+  // Skeleton component for loading state
+  const ImageSkeleton = () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full max-w-72 max-h-72">
+        {/* Skeleton shape */}
+        <div className="absolute inset-0 bg-gradient-to-br from-charcoal-200 to-charcoal-300 rounded-2xl animate-pulse">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+        </div>
+        {/* Skeleton content */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-32 h-32 bg-charcoal-400/30 rounded-full animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Enhanced wipe animation variants with better timing
   const wipeVariants = {
     initial: {
       clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+      opacity: 0,
     },
     animate: {
       clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+      opacity: 1,
       transition: {
-        duration: 0.3,
-        ease: "easeOut",
+        clipPath: {
+          duration: 0.4,
+          ease: "easeOut",
+        },
+        opacity: {
+          duration: 0.2,
+          ease: "easeOut",
+        },
       },
     },
     exit: {
       clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
+      opacity: 0,
       transition: {
-        duration: 0.3,
-        ease: "easeIn",
+        clipPath: {
+          duration: 0.3,
+          ease: "easeIn",
+        },
+        opacity: {
+          duration: 0.1,
+          ease: "easeIn",
+        },
       },
     },
   };
 
-  const handleColorChange = (index) => {
-    if (index !== selectedColor) {
-      setSelectedColor(index);
-      setImageError(false);
-    }
-  };
+    const handleColorChange = (index) => {    console.log(`ProductShowcase - Color change clicked: index ${index}, color: ${featuredProduct.colors[index].name}`);    if (index !== selectedColor) {      setImageLoading(!preloadedImages.has(index));      setSelectedColor(index);      setImageError(false);      console.log(`ProductShowcase - State updated: selectedColor=${index}, imageLoading=${!preloadedImages.has(index)}`);    }  };
 
   const handleImageError = () => {
     setImageError(true);
+    setImageLoading(false);
+  };
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+    setPreloadedImages(prev => new Set([...prev, selectedColor]));
   };
 
   const handleAddToCart = async () => {
@@ -140,7 +199,7 @@ const ProductShowcase = () => {
               {/* Background glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-3xl blur-3xl opacity-8 transform scale-110 -z-10"></div>
               
-              {/* Product Image with wipe animation */}
+              {/* Product Image with enhanced loading states */}
               <div className="relative h-80 bg-gradient-to-br from-white to-charcoal-50 rounded-2xl overflow-hidden mb-6">
                 <div className="absolute inset-0 shadow-inner shadow-charcoal-900/5"></div>
                 
@@ -152,6 +211,13 @@ const ProductShowcase = () => {
                   className="relative h-full flex items-center justify-center p-8"
                 >
                   <div className="relative w-full h-full max-w-72 max-h-72 overflow-hidden">
+                    {/* Show skeleton while loading and image not preloaded */}
+                    {imageLoading && !preloadedImages.has(selectedColor) && (
+                      <div className="absolute inset-0 z-10">
+                        <ImageSkeleton />
+                      </div>
+                    )}
+                    
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`${featuredProduct.id}-${selectedColor}`}
@@ -167,20 +233,7 @@ const ProductShowcase = () => {
                             <p className="text-sm font-medium text-center text-charcoal-500">
                               {currentColor.name}
                             </p>
-                          </div>
-                        ) : (
-                          <Image
-                            src={currentColor.image}
-                            alt={`${featuredProduct.name} in ${currentColor.name}`}
-                            width={288}
-                            height={288}
-                            className="w-full h-full object-contain drop-shadow-lg"
-                            onError={handleImageError}
-                            loading="lazy"
-                            placeholder="blur"
-                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                          />
-                        )}
+                                                    </div>                        ) : (                          <Image                            src={currentColor.image}                            alt={`${featuredProduct.name} in ${currentColor.name}`}                            width={288}                            height={288}                            className="w-full h-full object-contain drop-shadow-lg"                            onError={handleImageError}                            onLoad={handleImageLoad}                            loading={selectedColor === 0 ? "eager" : "lazy"}                            placeholder="blur"                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QFLQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="                            priority={selectedColor === 0}                          />                        )}
                       </motion.div>
                     </AnimatePresence>
                   </div>
