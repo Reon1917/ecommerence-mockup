@@ -6,10 +6,12 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
+import { useCart } from "@/lib/cart-context";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { totalItems } = useCart();
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -49,8 +51,22 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center">
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Cart Icon */}
+            <Link href="/cart" className="relative">
+              <Button variant="ghost" size="sm" className="text-charcoal-100 hover:bg-charcoal-700 hover:text-gold-400 p-2">
+                <ShoppingCart className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center min-w-[20px] shadow-gold">
+                    {totalItems > 99 ? '99+' : totalItems}
+                  </span>
+                )}
+                <span className="sr-only">Shopping cart</span>
+              </Button>
+            </Link>
+            
+            {/* Shop Now Button */}
             <Link href="/models">
               <Button size="sm" className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 shadow-gold border-none text-sm lg:text-base px-4 lg:px-6">
                 Shop Now
@@ -98,6 +114,21 @@ const Navbar = () => {
                       {item.label}
                     </Link>
                   ))}
+                  
+                  {/* Mobile Cart Link */}
+                  <Link
+                    href="/cart"
+                    className="flex items-center space-x-3 text-charcoal-200 hover:text-gold-400 transition-colors duration-200 font-medium text-lg py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <span>Cart</span>
+                    {totalItems > 0 && (
+                      <span className="bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center min-w-[20px] shadow-gold">
+                        {totalItems > 99 ? '99+' : totalItems}
+                      </span>
+                    )}
+                  </Link>
                 </div>
 
                 {/* Mobile CTA */}

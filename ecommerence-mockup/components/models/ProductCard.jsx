@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/cart-context";
 import { 
   Heart, 
   Activity, 
@@ -17,13 +18,19 @@ import {
   Smartphone,
   CheckCircle,
   Star,
-  ImageIcon
+  ImageIcon,
+  ShoppingCart,
+  Check
 } from "lucide-react";
 
 const ProductCard = ({ product }) => {
   const [selectedColor, setSelectedColor] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+  
+  const { addItem } = useCart();
 
   const handleColorChange = (index) => {
     setSelectedColor(index);
@@ -33,6 +40,24 @@ const ProductCard = ({ product }) => {
   const handleImageError = () => {
     console.log(`Image failed to load: ${product.colors[selectedColor].image}`);
     setImageError(true);
+  };
+
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    
+    // Add item to cart
+    addItem(product, selectedColor);
+    
+    // Show success state
+    setTimeout(() => {
+      setIsAdding(false);
+      setJustAdded(true);
+      
+      // Reset success state after 2 seconds
+      setTimeout(() => {
+        setJustAdded(false);
+      }, 2000);
+    }, 500);
   };
 
   return (
@@ -253,10 +278,51 @@ const ProductCard = ({ product }) => {
             className="mt-auto"
           >
             <Button 
-              className="w-full bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 font-semibold shadow-gold hover:shadow-gold-lg transition-all duration-300 border-none"
+              onClick={handleAddToCart}
+              disabled={isAdding || justAdded}
+              className={`w-full font-semibold shadow-gold hover:shadow-gold-lg transition-all duration-300 border-none ${
+                justAdded 
+                  ? 'bg-green-600 hover:bg-green-600 text-white' 
+                  : 'bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50'
+              }`}
               size="lg"
             >
-              Add to Cart
+              <AnimatePresence mode="wait">
+                {isAdding ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center space-x-2"
+                  >
+                    <div className="w-4 h-4 border-2 border-charcoal-50 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Adding...</span>
+                  </motion.div>
+                ) : justAdded ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center space-x-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>Added to Cart!</span>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="default"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="flex items-center space-x-2"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>Add to Cart</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </Button>
           </motion.div>
         </div>

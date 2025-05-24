@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { CartProvider } from "@/lib/cart-context";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -67,11 +68,13 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" href="/logo/helio-logo.png" />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <Navbar />
-        <main className="min-h-screen pt-16">
-          {children}
-        </main>
-        <Footer />
+        <CartProvider>
+          <Navbar />
+          <main className="min-h-screen pt-16">
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
