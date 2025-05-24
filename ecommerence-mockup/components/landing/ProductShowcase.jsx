@@ -115,7 +115,7 @@ const ProductShowcase = () => {
     </div>
   );
 
-  // Enhanced wipe animation variants with better timing
+  // Enhanced wipe animation variants with better timing - Synced with ProductCard
   const wipeVariants = {
     initial: {
       clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
@@ -151,7 +151,15 @@ const ProductShowcase = () => {
     },
   };
 
-    const handleColorChange = (index) => {    console.log(`ProductShowcase - Color change clicked: index ${index}, color: ${featuredProduct.colors[index].name}`);    if (index !== selectedColor) {      setImageLoading(!preloadedImages.has(index));      setSelectedColor(index);      setImageError(false);      console.log(`ProductShowcase - State updated: selectedColor=${index}, imageLoading=${!preloadedImages.has(index)}`);    }  };
+  const handleColorChange = (index) => {
+    console.log(`ProductShowcase - Color change clicked: index ${index}, color: ${featuredProduct.colors[index].name}`);
+    if (index !== selectedColor) {
+      setImageLoading(!preloadedImages.has(index));
+      setSelectedColor(index);
+      setImageError(false);
+      console.log(`ProductShowcase - State updated: selectedColor=${index}, imageLoading=${!preloadedImages.has(index)}`);
+    }
+  };
 
   const handleImageError = () => {
     setImageError(true);
@@ -184,7 +192,7 @@ const ProductShowcase = () => {
   const currentColor = featuredProduct.colors[selectedColor];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-charcoal-50 via-charcoal-100 to-charcoal-200">
+    <section className="py-20 bg-gradient-to-b from-charcoal-400 via-charcoal-100 to-charcoal-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left - Product Image with Interactive Features */}

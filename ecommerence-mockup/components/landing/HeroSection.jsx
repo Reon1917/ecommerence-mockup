@@ -31,12 +31,12 @@ const HeroSection = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center min-h-[80vh]">
-          {/* Left Content - Optimized timing */}
+          {/* Left Content - Text comes first on mobile */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="space-y-6 sm:space-y-8 order-2 lg:order-1"
+            className="space-y-6 sm:space-y-8 order-1 lg:order-1"
           >
             {/* Social Proof Badges - Grouped animation */}
             <motion.div
@@ -123,12 +123,12 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Simplified animations */}
+          {/* Right Content - Image comes second on mobile */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative flex justify-center items-center order-1 lg:order-2"
+            className="relative flex justify-center items-center order-2 lg:order-2"
           >
             {/* Main Lifestyle Image - Simplified hover */}
             <motion.div

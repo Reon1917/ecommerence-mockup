@@ -71,9 +71,9 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-charcoal-200 via-charcoal-600 to-charcoal-800">
+    <section className="py-20 bg-gradient-to-b from-charcoal-50 via-charcoal-200 to-charcoal-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header - Faster timing */}
+        {/* Section Header - Fixed text colors */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,16 +84,16 @@ const Testimonials = () => {
           <Badge className="mb-4 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 border-none shadow-gold">
             Trusted by Thousands
           </Badge>
-          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal-50 mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal-800 mb-6">
             What Our Users Say
           </h2>
-          <p className="text-xl text-charcoal-200 max-w-3xl mx-auto">
+          <p className="text-xl text-charcoal-600 max-w-3xl mx-auto">
             Join thousands of satisfied users who have transformed their health 
             with Helio Ring's advanced monitoring technology.
           </p>
         </motion.div>
 
-        {/* Stats - Single grouped animation */}
+        {/* Stats - Removed gradient text */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -104,12 +104,12 @@ const Testimonials = () => {
           {stats.map((stat, index) => (
             <div
               key={stat.label}
-              className="text-center p-6 bg-charcoal-600/30 backdrop-blur-sm rounded-xl border border-charcoal-600 hover:border-gold-500 transition-all duration-300"
+              className="text-center p-6 bg-charcoal-50/80 backdrop-blur-sm rounded-xl border border-charcoal-300 hover:border-gold-500 transition-all duration-300"
             >
-              <div className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent mb-2">
+              <div className="text-3xl lg:text-4xl font-bold text-gold-600 mb-2">
                 {stat.value}
               </div>
-              <div className="text-charcoal-200 font-medium">{stat.label}</div>
+              <div className="text-charcoal-600 font-medium">{stat.label}</div>
             </div>
           ))}
         </motion.div>

@@ -5,75 +5,75 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Heart, 
-  Activity, 
-  Droplets, 
-  Zap, 
-  Moon, 
-  TrendingUp,
-  Shield,
-  Smartphone,
-  Clock,
-  BarChart3
-} from "lucide-react";
+  FaHeart, 
+  FaHeartbeat, 
+  FaTint, 
+  FaBolt, 
+  FaMoon, 
+  FaChartLine,
+  FaShieldAlt,
+  FaMobileAlt,
+  FaClock,
+  FaChartBar
+} from "react-icons/fa";
 
 const FeaturesGrid = () => {
   const features = [
     {
-      icon: Heart,
+      icon: FaHeart,
       title: "Heart Rate Monitoring",
       description: "Continuous 24/7 heart rate tracking with medical-grade accuracy",
       color: "text-gold-500",
       bgColor: "bg-gradient-to-br from-gold-100 to-gold-200",
     },
     {
-      icon: Activity,
+      icon: FaHeartbeat,
       title: "Blood Pressure",
       description: "Real-time blood pressure monitoring without uncomfortable cuffs",
-      color: "text-gold-400",
+      color: "text-gold-500",
       bgColor: "bg-gradient-to-br from-gold-50 to-gold-100",
     },
     {
-      icon: Droplets,
+      icon: FaTint,
       title: "Blood Oxygen",
       description: "SpO2 monitoring to track your oxygen saturation levels",
-      color: "text-gold-600",
+      color: "text-gold-500",
       bgColor: "bg-gradient-to-br from-gold-200 to-gold-300",
     },
     {
-      icon: Moon,
+      icon: FaMoon,
       title: "Sleep Tracking",
       description: "Detailed sleep analysis including REM, deep, and light sleep phases",
       color: "text-gold-500",
       bgColor: "bg-gradient-to-br from-charcoal-100 to-charcoal-200",
     },
     {
-      icon: Zap,
+      icon: FaBolt,
       title: "Energy Levels",
       description: "Track your daily energy patterns and optimize your performance",
-      color: "text-gold-400",
+      color: "text-gold-500",
       bgColor: "bg-gradient-to-br from-gold-100 to-charcoal-100",
     },
     {
-      icon: TrendingUp,
+      icon: FaChartLine,
       title: "Stress Monitoring",
       description: "Advanced stress detection with guided breathing exercises",
-      color: "text-gold-600",
+      color: "text-gold-500",
       bgColor: "bg-gradient-to-br from-gold-50 to-charcoal-50",
     },
   ];
 
   const specs = [
-    { icon: Clock, label: "10-Day Battery", value: "Extended use" },
-    { icon: Shield, label: "Waterproof", value: "IP68 Rating" },
-    { icon: Smartphone, label: "App Sync", value: "iOS & Android" },
-    { icon: BarChart3, label: "AI Insights", value: "Personalized" },
+    { icon: FaClock, label: "10-Day Battery", value: "Extended use" },
+    { icon: FaShieldAlt, label: "Waterproof", value: "IP68 Rating" },
+    { icon: FaMobileAlt, label: "App Sync", value: "iOS & Android" },
+    { icon: FaChartBar, label: "AI Insights", value: "Personalized" },
   ];
 
   return (
     <section className="py-20 bg-gradient-to-b from-charcoal-900 via-charcoal-100 to-charcoal-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header - Faster timing */}
+        {/* Section Header - Fixed contrast */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -81,14 +81,14 @@ const FeaturesGrid = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <Badge className="mb-4 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 border-none shadow-gold">
+          <Badge className="mb-4 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-50 border-none shadow-gold">
             Advanced Health Technology
           </Badge>
-          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal-800 mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal-50 mb-6">
             Complete Health Monitoring
-            <span className="block bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">In One Ring</span>
+            <span className="block text-charcoal-50">In One Ring</span>
           </h2>
-          <p className="text-xl text-charcoal-600 max-w-3xl mx-auto">
+          <p className="text-xl text-charcoal-200 max-w-3xl mx-auto">
             Experience the future of health tracking with our comprehensive suite of sensors 
             and AI-powered insights, all seamlessly integrated into your daily life.
           </p>
