@@ -29,8 +29,8 @@ const Navbar = () => {
               <Image
                 src="/logo/helio-logo.png"
                 alt="Helio Logo"
-                width={48}
-                height={48}
+                width={64}
+                height={64}
                 className="w-full h-full object-contain drop-shadow-lg"
                 priority
               />

@@ -9,9 +9,9 @@ const Footer = () => {
   const footerLinks = {
     product: [
       { href: "/models", label: "All Models" },
-      { href: "/models/helio", label: "Helio" },
-      { href: "/models/helio-pro", label: "Helio Pro" },
-      { href: "/models/helio-kids", label: "Helio Kids" },
+      { href: "/models/helio-prime", label: "Helio Prime" },
+      { href: "/models/helio-aurora", label: "Helio Aurora" },
+      { href: "/models/helio-nova", label: "Helio Nova" },
     ],
     support: [
       { href: "/support", label: "Help Center" },

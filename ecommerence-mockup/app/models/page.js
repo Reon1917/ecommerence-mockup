@@ -20,8 +20,8 @@ export default function ModelsPage() {
   const products = [
     {
       id: 1,
-      name: "Helio",
-      description: "Essential health tracking for everyday wellness. Perfect for men who want comprehensive health monitoring without compromise.",
+      name: "Helio Prime",
+      description: "Precision health tracking engineered for men.",
       price: 299,
       originalPrice: 349,
       rating: 4.8,
@@ -58,8 +58,8 @@ export default function ModelsPage() {
     },
     {
       id: 2,
-      name: "Helio Women",
-      description: "Elegant health tracking designed specifically for women. Advanced features in a sophisticated, comfortable design.",
+      name: "Helio Aurora",
+      description: "Elegant wellness technology designed for women.",
       price: 349,
       originalPrice: 399,
       rating: 4.9,
@@ -96,8 +96,8 @@ export default function ModelsPage() {
     },
     {
       id: 3,
-      name: "Helio Kids",
-      description: "Safe, fun health tracking designed specifically for children. Parental controls and kid-friendly features included.",
+      name: "Helio Nova",
+      description: "Safe, fun health tracking that grows with kids.",
       price: 199,
       originalPrice: 249,
       rating: 4.7,

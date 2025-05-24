@@ -28,8 +28,8 @@ const ProductShowcase = () => {
   // Use the same product data structure as models page
   const featuredProduct = {
     id: 1,
-    name: "Helio",
-    description: "Essential health tracking for everyday wellness. Perfect for men who want comprehensive health monitoring without compromise.",
+    name: "Helio Prime",
+    description: "Precision health tracking engineered for men.",
     price: 299,
     originalPrice: 349,
     rating: 4.8,
