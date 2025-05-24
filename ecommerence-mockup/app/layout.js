@@ -36,7 +36,6 @@ export const metadata = {
     shortcut: "/favicon.ico",
   },
   manifest: "/site.webmanifest",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   openGraph: {
     title: "Helio Ring - Advanced Health Tracking",
     description: "Revolutionary health monitoring technology in a sleek ring design",
@@ -61,13 +60,17 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/logo/helio-logo.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <CartProvider>
