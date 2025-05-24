@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -584,10 +585,12 @@ export default function CheckoutPage() {
                 {items.map((item) => (
                   <div key={item.id} className="flex items-center space-x-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-charcoal-50 to-charcoal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
                         className="w-10 h-10 object-contain"
+                        width={40}
+                        height={40}
                       />
                     </div>
                     <div className="flex-1 min-w-0">

@@ -136,10 +136,13 @@ export default function CartPage() {
                     >
                       {/* Product Image */}
                       <div className="w-20 h-20 bg-gradient-to-br from-charcoal-50 to-charcoal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <img
+                        <Image
                           src={item.image}
                           alt={`${item.name} in ${item.color}`}
                           className="w-16 h-16 object-contain"
+                          width={64}
+                          height={64}
+                          loading="lazy"
                         />
                       </div>
 

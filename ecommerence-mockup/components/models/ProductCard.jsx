@@ -207,12 +207,18 @@ const ProductCard = ({ product }) => {
                       </p>
                     </div>
                   ) : (
-                    <img
+                    <Image
                       src={currentColor.image}
                       alt={`${product.name} in ${currentColor.name}`}
+                      width={288}
+                      height={288}
                       className="w-full h-full object-contain drop-shadow-lg"
                       onError={handleImageError}
                       onLoad={() => console.log(`Image loaded: ${currentColor.image}`)}
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                      priority={false}
                     />
                   )}
                 </motion.div>

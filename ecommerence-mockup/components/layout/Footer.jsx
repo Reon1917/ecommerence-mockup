@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Heart, Mail, Phone, MapPin } from "lucide-react";
+import { Heart, Mail, Phone, MapPin, Code, Monitor } from "lucide-react";
 
 const Footer = () => {
   const footerLinks = {
@@ -144,6 +144,23 @@ const Footer = () => {
         </div>
 
         <Separator className="my-6 sm:my-8 bg-charcoal-600" />
+
+        {/* Portfolio Disclaimer Section */}
+        <div className="bg-charcoal-700/50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border border-charcoal-600">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+            <div className="flex items-center space-x-2 text-gold-400">
+              <Code className="h-5 w-5 flex-shrink-0" />
+              <Monitor className="h-5 w-5 flex-shrink-0" />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold text-charcoal-100 mb-2 text-sm sm:text-base">Portfolio Showcase</h4>
+              <p className="text-charcoal-300 text-xs sm:text-sm leading-relaxed">
+                This project is a frontend-only e-commerce simulation built to showcase UI/UX and React/Next.js skills. 
+                All data and interactions are mockups; no backend or real transactions are implemented.
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Bottom Footer */}
         <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center">

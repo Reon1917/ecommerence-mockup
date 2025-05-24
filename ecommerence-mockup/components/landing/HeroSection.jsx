@@ -22,27 +22,27 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-charcoal-800 via-charcoal-700 to-charcoal-900 overflow-hidden">
-      {/* Background Elements - Monochromatic with Metallic Hints */}
+      {/* Simplified Background Elements - Static gradients for better performance */}
       <div className="absolute inset-0">
-        <div className="absolute top-10 sm:top-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-r from-charcoal-600 to-charcoal-500 rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-20 sm:top-40 right-4 sm:right-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full mix-blend-overlay filter blur-xl opacity-10 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-r from-charcoal-500 to-charcoal-400 rounded-full mix-blend-overlay filter blur-xl opacity-15 animate-pulse delay-2000"></div>
+        <div className="absolute top-10 sm:top-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-r from-charcoal-600 to-charcoal-500 rounded-full mix-blend-overlay filter blur-xl opacity-15"></div>
+        <div className="absolute top-20 sm:top-40 right-4 sm:right-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full mix-blend-overlay filter blur-xl opacity-8"></div>
+        <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-r from-charcoal-500 to-charcoal-400 rounded-full mix-blend-overlay filter blur-xl opacity-12"></div>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center min-h-[80vh]">
-          {/* Left Content */}
+          {/* Left Content - Optimized timing */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             className="space-y-6 sm:space-y-8 order-2 lg:order-1"
           >
-            {/* Social Proof Badges */}
+            {/* Social Proof Badges - Grouped animation */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
               className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 mb-4"
             >
               {socialProof.map((proof, index) => (
@@ -56,10 +56,11 @@ const HeroSection = () => {
               ))}
             </motion.div>
 
+            {/* Main Heading - Faster timing */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
             >
               <Badge className="mb-4 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 hover:from-gold-600 hover:to-gold-500 border-none shadow-gold text-xs sm:text-sm">
                 🚀 Revolutionary Health Technology
@@ -72,10 +73,11 @@ const HeroSection = () => {
               </h1>
             </motion.div>
 
+            {/* Description - Faster timing */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
               className="text-base sm:text-lg lg:text-xl text-charcoal-200 leading-relaxed"
             >
               Join thousands who've transformed their health with advanced tracking technology 
@@ -83,10 +85,11 @@ const HeroSection = () => {
               and more with precision that fits on your finger.
             </motion.p>
 
+            {/* CTA Button - Faster timing */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
               className="flex flex-col sm:flex-row gap-4"
             >
               <Link href="/models">
@@ -96,19 +99,16 @@ const HeroSection = () => {
               </Link>
             </motion.div>
 
-            {/* Health Metrics Preview */}
+            {/* Health Metrics Preview - Single grouped animation */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-6 sm:pt-8"
             >
               {healthMetrics.map((metric, index) => (
-                <motion.div
+                <div
                   key={metric.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1 + index * 0.1, duration: 0.4 }}
                   className="bg-charcoal-700/80 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-charcoal-600 shadow-charcoal hover:shadow-charcoal-lg transition-all duration-300 hover:bg-charcoal-600/80"
                 >
                   <div className="flex items-center space-x-2 sm:space-x-3">
@@ -118,23 +118,23 @@ const HeroSection = () => {
                       <div className="font-semibold text-sm sm:text-base text-charcoal-50">{metric.value}</div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Lifestyle Image */}
+          {/* Right Content - Simplified animations */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             className="relative flex justify-center items-center order-1 lg:order-2"
           >
-            {/* Main Lifestyle Image */}
+            {/* Main Lifestyle Image - Simplified hover */}
             <motion.div
               whileHover={{ 
                 scale: 1.02,
-                transition: { duration: 0.3 }
+                transition: { duration: 0.2 }
               }}
               className="relative z-10 w-full max-w-sm sm:max-w-md lg:max-w-lg"
             >
@@ -147,11 +147,11 @@ const HeroSection = () => {
                 priority
               />
               
-              {/* Overlay Badge */}
+              {/* Overlay Badge - Faster timing */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.2, duration: 0.5 }}
+                transition={{ delay: 0.7, duration: 0.3 }}
                 className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-charcoal-700/90 backdrop-blur-sm rounded-lg p-2 sm:p-3 shadow-charcoal-lg border border-charcoal-600"
               >
                 <div className="flex items-center space-x-1.5 sm:space-x-2">
@@ -161,34 +161,19 @@ const HeroSection = () => {
               </motion.div>
             </motion.div>
 
-            {/* Floating Elements - Hidden on mobile for cleaner look */}
+            {/* Simplified Floating Elements - Subtle hover states only */}
             <motion.div
-              animate={{ 
-                y: [-8, 8, -8],
-                rotate: [0, 3, 0]
-              }}
-              transition={{ 
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="hidden sm:block absolute -top-4 -right-4 lg:-top-6 lg:-right-6 bg-charcoal-700 rounded-full p-2 sm:p-3 shadow-charcoal-lg border border-charcoal-600"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+              className="hidden sm:block absolute -top-4 -right-4 lg:-top-6 lg:-right-6 bg-charcoal-700 rounded-full p-2 sm:p-3 shadow-charcoal-lg border border-charcoal-600 cursor-pointer"
             >
               <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-gold-500" />
             </motion.div>
 
             <motion.div
-              animate={{ 
-                y: [8, -8, 8],
-                rotate: [0, -3, 0]
-              }}
-              transition={{ 
-                duration: 3.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1
-              }}
-              className="hidden sm:block absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-charcoal-700 rounded-full p-2 sm:p-3 shadow-charcoal-lg border border-charcoal-600"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+              className="hidden sm:block absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-charcoal-700 rounded-full p-2 sm:p-3 shadow-charcoal-lg border border-charcoal-600 cursor-pointer"
             >
               <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-gold-400" />
             </motion.div>

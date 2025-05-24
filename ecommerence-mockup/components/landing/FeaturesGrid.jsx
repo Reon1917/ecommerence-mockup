@@ -73,11 +73,11 @@ const FeaturesGrid = () => {
   return (
     <section className="py-20 bg-gradient-to-b from-charcoal-900 via-charcoal-100 to-charcoal-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header - Faster timing */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
@@ -95,17 +95,17 @@ const FeaturesGrid = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Left - Ring + App Image */}
+          {/* Left - Ring + App Image - Simplified */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="relative"
           >
             <div className="relative">
-              {/* Background Glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-3xl blur-3xl opacity-10 transform scale-110"></div>
+              {/* Background Glow - Static for performance */}
+              <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-3xl blur-3xl opacity-8 transform scale-110"></div>
               
               {/* Main Image */}
               <Image
@@ -114,40 +114,39 @@ const FeaturesGrid = () => {
                 width={600}
                 height={600}
                 className="relative z-10 w-full h-auto rounded-2xl shadow-charcoal-lg border border-charcoal-200"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
               />
               
-              {/* Floating Spec Cards */}
-              {specs.map((spec, index) => (
-                <motion.div
-                  key={spec.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className={`absolute bg-charcoal-700/90 backdrop-blur-sm rounded-lg p-3 shadow-charcoal-lg border border-charcoal-600 ${
-                    index === 0 ? 'top-4 right-4' :
-                    index === 1 ? 'bottom-4 right-4' :
-                    index === 2 ? 'bottom-4 left-4' :
-                    'top-4 left-4'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <spec.icon className="h-4 w-4 text-gold-500" />
-                    <div>
-                      <div className="text-xs font-medium text-charcoal-50">{spec.label}</div>
-                      <div className="text-xs text-charcoal-200">{spec.value}</div>
+              {/* Simplified Spec Display - Static overlay */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                viewport={{ once: true }}
+                className="absolute bottom-4 left-4 right-4 bg-charcoal-700/90 backdrop-blur-sm rounded-lg p-4 shadow-charcoal-lg border border-charcoal-600"
+              >
+                <div className="grid grid-cols-2 gap-3">
+                  {specs.map((spec, index) => (
+                    <div key={spec.label} className="flex items-center space-x-2">
+                      <spec.icon className="h-4 w-4 text-gold-500 flex-shrink-0" />
+                      <div>
+                        <div className="text-xs font-medium text-charcoal-50">{spec.label}</div>
+                        <div className="text-xs text-charcoal-200">{spec.value}</div>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </motion.div>
 
-          {/* Right - Features List */}
+          {/* Right - Features List - Grouped animation */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="space-y-6"
           >
@@ -161,14 +160,17 @@ const FeaturesGrid = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
+            {/* Features List - Single grouped animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-1 gap-4"
+            >
               {features.slice(0, 3).map((feature, index) => (
-                <motion.div
+                <div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
                   className="flex items-start space-x-4 p-4 rounded-lg hover:bg-charcoal-200/50 transition-all duration-200 border border-transparent hover:border-charcoal-300"
                 >
                   <div className={`p-2 rounded-lg ${feature.bgColor} shadow-sm`}>
@@ -178,43 +180,45 @@ const FeaturesGrid = () => {
                     <h4 className="font-semibold text-charcoal-800 mb-1">{feature.title}</h4>
                     <p className="text-sm text-charcoal-600">{feature.description}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
-        {/* Features Grid */}
+        {/* Features Grid - Grouped by rows */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
+              transition={{ 
+                delay: Math.floor(index / 3) * 0.1, // Group by rows
+                duration: 0.4 
+              }}
               viewport={{ once: true }}
               whileHover={{ 
-                y: -5,
+                y: -3,
                 transition: { duration: 0.2 }
               }}
             >
-              <Card className="h-full p-6 border-charcoal-300 bg-card/80 backdrop-blur-sm hover:shadow-charcoal-lg transition-all duration-300 hover:border-gold-400 group">
-                <div className="flex items-start space-x-4 mb-4">
-                  <div className={`p-3 rounded-xl ${feature.bgColor} shadow-sm group-hover:shadow-gold transition-all duration-300`}>
-                    <feature.icon className={`h-6 w-6 ${feature.color}`} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-charcoal-800 mb-2 group-hover:text-charcoal-900 transition-colors">
-                      {feature.title}
-                    </h3>
-                  </div>
+              <Card className="p-6 h-full bg-gradient-to-br from-charcoal-50 to-charcoal-100 border-charcoal-200 shadow-charcoal hover:shadow-charcoal-lg transition-all duration-300 group hover:border-gold-300">
+                {/* Icon */}
+                <div className={`inline-flex p-3 rounded-xl ${feature.bgColor} shadow-sm mb-4 group-hover:scale-105 transition-transform duration-200`}>
+                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
                 </div>
+
+                {/* Content */}
+                <h3 className="text-xl font-semibold text-charcoal-800 mb-3 group-hover:text-charcoal-900 transition-colors">
+                  {feature.title}
+                </h3>
                 <p className="text-charcoal-600 leading-relaxed group-hover:text-charcoal-700 transition-colors">
                   {feature.description}
                 </p>
@@ -223,29 +227,24 @@ const FeaturesGrid = () => {
           ))}
         </motion.div>
 
-        {/* Bottom CTA Section */}
+        {/* Bottom CTA - Simplified */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <div className="bg-gradient-to-r from-charcoal-700 to-charcoal-800 rounded-2xl p-8 shadow-charcoal-lg border border-charcoal-600">
-            <h3 className="text-2xl font-bold text-charcoal-50 mb-4">
-              Ready to Transform Your Health?
-            </h3>
-            <p className="text-charcoal-200 mb-6 max-w-2xl mx-auto">
-              Join thousands of users who've revolutionized their health monitoring with the Helio Ring.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-gold text-charcoal-50 px-8 py-3 rounded-lg font-semibold shadow-gold-lg hover:shadow-gold transition-all duration-300 border-none"
-            >
-              Shop Now - Starting at $199
-            </motion.button>
-          </div>
+          <p className="text-lg text-charcoal-600 mb-6">
+            Ready to experience the future of health monitoring?
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-gold-lg border-none"
+          >
+            Explore All Features
+          </motion.button>
         </motion.div>
       </div>
     </section>
