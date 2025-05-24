@@ -20,7 +20,8 @@ import {
   Star,
   ImageIcon,
   ShoppingCart,
-  Check
+  Check,
+  StarHalf
 } from "lucide-react";
 
 const ProductCard = ({ product }) => {
@@ -32,9 +33,32 @@ const ProductCard = ({ product }) => {
   
   const { addItem } = useCart();
 
+  // Wipe animation variants for color switching
+  const wipeVariants = {
+    initial: {
+      clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+    },
+    animate: {
+      clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+    exit: {
+      clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
+      transition: {
+        duration: 0.3,
+        ease: "easeIn",
+      },
+    },
+  };
+
   const handleColorChange = (index) => {
-    setSelectedColor(index);
-    setImageError(false);
+    if (index !== selectedColor) {
+      setSelectedColor(index);
+      setImageError(false);
+    }
   };
 
   const handleImageError = () => {
@@ -60,6 +84,71 @@ const ProductCard = ({ product }) => {
     }, 500);
   };
 
+  // Feature icon mapping
+  const getFeatureIcon = (featureName) => {
+    const iconMap = {
+      'Heart Rate': Heart,
+      'Blood Pressure': Activity,
+      'Blood Oxygen': Droplets,
+      'Sleep Tracking': Moon,
+      'Sleep Analysis': Moon,
+      'Sleep Monitor': Moon,
+      'Stress Monitor': Zap,
+      'Activity Monitor': Activity,
+      'Activity Track': Activity,
+      'Waterproof': Shield,
+      'Safe Design': Shield,
+      '7-Day Battery': Clock,
+      '10-Day Battery': Clock,
+      '5-Day Battery': Clock,
+      'Smart Sync': Smartphone,
+      'Parent Control': Shield
+    };
+    
+    return iconMap[featureName] || Activity;
+  };
+
+  // Star rating component with half-star support
+  const StarRating = ({ rating, size = 16 }) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    return (
+      <div className="flex items-center space-x-0.5">
+        {/* Full stars */}
+        {[...Array(fullStars)].map((_, i) => (
+          <Star 
+            key={`full-${i}`} 
+            className="text-gold-500 fill-current" 
+            size={size}
+          />
+        ))}
+        
+        {/* Half star */}
+        {hasHalfStar && (
+          <div className="relative">
+            <Star className="text-charcoal-300" size={size} />
+            <div className="absolute inset-0 overflow-hidden w-1/2">
+              <Star className="text-gold-500 fill-current" size={size} />
+            </div>
+          </div>
+        )}
+        
+        {/* Empty stars */}
+        {[...Array(emptyStars)].map((_, i) => (
+          <Star 
+            key={`empty-${i}`} 
+            className="text-charcoal-300" 
+            size={size}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const currentColor = product.colors[selectedColor];
+
   return (
     <motion.div
       initial={{ opacity: 1, y: 0 }}
@@ -69,101 +158,97 @@ const ProductCard = ({ product }) => {
       onHoverEnd={() => setIsHovered(false)}
       className="group h-full"
     >
-      <Card className="relative overflow-hidden bg-charcoal-100/80 backdrop-blur-sm border-charcoal-300 rounded-2xl shadow-charcoal hover:shadow-charcoal-lg hover:border-gold-400 transition-all duration-300 h-full flex flex-col">
-        {/* Subtle Glow Effect */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: isHovered ? 0.15 : 0,
-          }}
-          transition={{ duration: 0.3 }}
-          className="absolute -inset-px bg-gradient-gold rounded-2xl -z-10"
-        />
-
-        {/* Popular Badge - Minimal */}
+      <Card className={`relative overflow-hidden bg-gradient-to-br from-charcoal-50 to-charcoal-100 border-charcoal-200 rounded-3xl transition-all duration-300 h-full flex flex-col ${
+        isHovered ? 'shadow-2xl shadow-charcoal-900/20 -translate-y-1 border-gold-300' : 'shadow-lg shadow-charcoal-900/10'
+      }`}>
+        
+        {/* Popular Badge - Top-left inside padding */}
         {product.popular && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="absolute top-4 left-4 z-10"
+            className="absolute top-6 left-6 z-20"
           >
-            <Badge className="bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 px-3 py-1 text-xs font-medium rounded-full border-none shadow-gold">
+            <Badge className="bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 px-3 py-1.5 text-xs font-semibold rounded-full border-none shadow-lg">
               Most Popular
             </Badge>
           </motion.div>
         )}
 
-        {/* Product Image Section - Completely flush with no borders */}
-        <div className="relative h-72 bg-gradient-to-br from-charcoal-50 to-charcoal-100 overflow-hidden">
+        {/* Product Image Section - Enhanced with wipe animation */}
+        <div className="relative h-80 bg-gradient-to-br from-white to-charcoal-50 overflow-hidden">
+          {/* Subtle inset shadow for depth */}
+          <div className="absolute inset-0 shadow-inner shadow-charcoal-900/5 rounded-t-3xl"></div>
+          
           <motion.div
             animate={{ 
-              scale: isHovered ? 1.02 : 1,
+              scale: isHovered ? 1.05 : 1,
             }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="relative h-full flex items-center justify-center p-6"
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="relative h-full flex items-center justify-center p-8"
           >
-            {/* Image Container - Full flush */}
-            <div className="relative w-full h-full max-w-64 max-h-64">
+            {/* Image Container with wipe animation */}
+            <div className="relative w-full h-full max-w-72 max-h-72 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedColor}
-                  initial={{ 
-                    clipPath: "inset(0 100% 0 0)" 
-                  }}
-                  animate={{ 
-                    clipPath: "inset(0 0% 0 0)" 
-                  }}
-                  exit={{ 
-                    clipPath: "inset(0 0% 0 100%)" 
-                  }}
-                  transition={{ 
-                    duration: 0.4, 
-                    ease: [0.25, 0.46, 0.45, 0.94] 
-                  }}
+                  key={`${product.id}-${selectedColor}`}
+                  variants={wipeVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
                   className="absolute inset-0 flex items-center justify-center"
                 >
                   {imageError ? (
                     <div className="flex flex-col items-center justify-center w-full h-full text-charcoal-400">
-                      <ImageIcon className="w-16 h-16 mb-3 text-charcoal-300" />
+                      <ImageIcon className="w-20 h-20 mb-4 text-charcoal-300" />
                       <p className="text-sm font-medium text-center text-charcoal-500">
-                        {product.colors[selectedColor].name}
+                        {currentColor.name}
                       </p>
                     </div>
                   ) : (
                     <img
-                      src={product.colors[selectedColor].image}
-                      alt={`${product.name} in ${product.colors[selectedColor].name}`}
-                      className="w-full h-full object-contain"
+                      src={currentColor.image}
+                      alt={`${product.name} in ${currentColor.name}`}
+                      className="w-full h-full object-contain drop-shadow-lg"
                       onError={handleImageError}
-                      onLoad={() => console.log(`Image loaded: ${product.colors[selectedColor].image}`)}
+                      onLoad={() => console.log(`Image loaded: ${currentColor.image}`)}
                     />
                   )}
                 </motion.div>
               </AnimatePresence>
             </div>
           </motion.div>
+        </div>
 
-          {/* Minimal Color Selector */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"
-          >
-            <div className="flex space-x-2 bg-charcoal-700/80 backdrop-blur-sm rounded-full p-2 shadow-charcoal border border-charcoal-600">
+        {/* Card Content - Improved spacing and typography */}
+        <div className="p-8 flex-1 flex flex-col space-y-6">
+          
+          {/* Product Header */}
+          <div className="space-y-3">
+            <h3 className="text-xl font-semibold text-charcoal-800 leading-tight">{product.name}</h3>
+            <p className="text-sm text-charcoal-600 leading-relaxed line-clamp-2">{product.description}</p>
+          </div>
+
+          {/* Color Swatches - Below image, clearly labeled */}
+          <div className="space-y-3">
+            <p className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">
+              Color: <span className="text-charcoal-700 normal-case">{currentColor.name}</span>
+            </p>
+            <div className="flex space-x-3">
               {product.colors.map((color, index) => (
                 <motion.button
                   key={index}
                   onClick={() => handleColorChange(index)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`relative w-8 h-8 rounded-full border-2 transition-all duration-200 ${
+                  className={`relative w-10 h-10 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 ${
                     selectedColor === index 
                       ? 'border-gold-500 ring-2 ring-gold-400/30' 
-                      : 'border-charcoal-400 hover:border-charcoal-300'
+                      : 'border-charcoal-300 hover:border-charcoal-400'
                   }`}
                   style={{ backgroundColor: color.hex }}
+                  aria-label={`Select ${color.name} color`}
                 >
                   {selectedColor === index && (
                     <motion.div
@@ -172,120 +257,78 @@ const ProductCard = ({ product }) => {
                       transition={{ duration: 0.2 }}
                       className="absolute inset-0 rounded-full flex items-center justify-center"
                     >
-                      <CheckCircle className="w-4 h-4 text-charcoal-50 drop-shadow-sm" />
+                      <CheckCircle className="w-5 h-5 text-white drop-shadow-md" />
                     </motion.div>
                   )}
                 </motion.button>
               ))}
             </div>
-          </motion.div>
-        </div>
+          </div>
 
-        {/* Product Details - Minimal */}
-        <div className="p-6 flex-1 flex flex-col">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mb-4"
-          >
-            <h3 className="text-xl font-semibold text-charcoal-800 mb-2">{product.name}</h3>
-            <p className="text-charcoal-600 text-sm leading-relaxed">{product.description}</p>
-            <motion.div 
-              key={selectedColor}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="mt-2 text-xs text-charcoal-500"
-            >
-              Color: <span className="font-medium text-charcoal-700">{product.colors[selectedColor].name}</span>
-            </motion.div>
-          </motion.div>
-
-          {/* Key Features - Minimal */}
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-4"
-          >
-            <div className="grid grid-cols-2 gap-2">
-              {product.features.slice(0, 4).map((feature, index) => (
-                <motion.div
-                  key={feature.name}
-                  initial={{ opacity: 1, x: 0 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + index * 0.05 }}
-                  className="flex items-center space-x-2 text-xs text-charcoal-600"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-gold-500"></div>
-                  <span>{feature.name}</span>
-                </motion.div>
-              ))}
+          {/* Key Features - Icon-based, two columns */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">Key Features</h4>
+            <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+              {product.features.slice(0, 4).map((feature, index) => {
+                const IconComponent = getFeatureIcon(feature.name);
+                return (
+                  <motion.div
+                    key={feature.name}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                    className="flex items-center space-x-2 text-xs text-charcoal-600"
+                  >
+                    <IconComponent className="w-4 h-4 text-gold-500 flex-shrink-0" />
+                    <span className="truncate">{feature.name}</span>
+                  </motion.div>
+                );
+              })}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Rating & Reviews */}
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="flex items-center space-x-3 mb-4"
-          >
-            <div className="flex items-center space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <Star 
-                  key={i} 
-                  className={`w-4 h-4 ${
-                    i < Math.floor(product.rating) 
-                      ? 'text-gold-500 fill-current' 
-                      : 'text-charcoal-300'
-                  }`} 
-                />
-              ))}
-            </div>
-            <span className="text-sm text-charcoal-600">
-              {product.rating} ({product.reviews.toLocaleString()} reviews)
+          {/* Rating & Reviews - Improved star component */}
+          <div className="flex items-center space-x-3">
+            <StarRating rating={product.rating} size={16} />
+            <span className="text-sm text-charcoal-600 font-medium">
+              {product.rating}
             </span>
-          </motion.div>
+            <span className="text-sm text-charcoal-500">
+              • {product.reviews.toLocaleString()} reviews
+            </span>
+          </div>
 
-          {/* Pricing - Minimal & Clean */}
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-6"
-          >
-            <div className="flex items-baseline space-x-2">
-              <span className="text-2xl font-bold text-charcoal-800">${product.price}</span>
+          {/* Pricing - Consolidated offer block */}
+          <div className="space-y-2">
+            <div className="flex items-baseline space-x-3">
+              <span className="text-2xl font-bold text-charcoal-800">${product.price.toFixed(2)}</span>
               {product.originalPrice && (
-                <span className="text-sm text-charcoal-500 line-through">${product.originalPrice}</span>
+                <span className="text-sm text-charcoal-400 line-through font-light">${product.originalPrice.toFixed(2)}</span>
               )}
             </div>
             {product.originalPrice && (
-              <div className="text-xs text-gold-600 font-medium mt-1">
-                Save ${product.originalPrice - product.price}
+              <div className="text-sm text-gold-600 font-semibold">
+                Save ${(product.originalPrice - product.price).toFixed(2)}
               </div>
             )}
-          </motion.div>
+          </div>
 
-          {/* CTA Button - Spacer Auto Push */}
+          {/* Add to Cart Button - Enhanced with proper padding and states */}
           <motion.div
             initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="mt-auto"
+            className="mt-auto pt-2"
           >
             <Button 
               onClick={handleAddToCart}
               disabled={isAdding || justAdded}
-              className={`w-full font-semibold shadow-gold hover:shadow-gold-lg transition-all duration-300 border-none ${
+              className={`w-full font-semibold text-base px-6 py-3 h-12 rounded-xl transition-all duration-300 border-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 ${
                 justAdded 
-                  ? 'bg-green-600 hover:bg-green-600 text-white' 
-                  : 'bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50'
+                  ? 'bg-green-600 hover:bg-green-600 text-white shadow-lg' 
+                  : 'bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-600 hover:to-gold-500 text-charcoal-800 shadow-lg hover:shadow-xl'
               }`}
-              size="lg"
+              aria-label={`Add ${product.name} to cart`}
             >
               <AnimatePresence mode="wait">
                 {isAdding ? (
@@ -294,9 +337,9 @@ const ProductCard = ({ product }) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center justify-center space-x-2"
                   >
-                    <div className="w-4 h-4 border-2 border-charcoal-50 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 border-2 border-charcoal-800 border-t-transparent rounded-full animate-spin"></div>
                     <span>Adding...</span>
                   </motion.div>
                 ) : justAdded ? (
@@ -305,9 +348,9 @@ const ProductCard = ({ product }) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center justify-center space-x-2"
                   >
-                    <Check className="w-4 h-4" />
+                    <Check className="w-5 h-5" />
                     <span>Added to Cart!</span>
                   </motion.div>
                 ) : (
@@ -316,9 +359,9 @@ const ProductCard = ({ product }) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center justify-center space-x-2"
                   >
-                    <ShoppingCart className="w-4 h-4" />
+                    <ShoppingCart className="w-5 h-5" />
                     <span>Add to Cart</span>
                   </motion.div>
                 )}
