@@ -12,7 +12,7 @@ const Testimonials = () => {
       role: "Cardiologist",
       location: "San Francisco, CA",
       rating: 5,
-      text: "As a cardiologist, I'm impressed by the accuracy of Helio Ring's heart rate and blood pressure monitoring. I recommend it to my patients for continuous health tracking.",
+      text: "The heart rate monitoring accuracy is impressive for a ring device. I've compared it with medical-grade equipment and the 5 medical-grade sensors deliver reliable data for my patients' daily health tracking.",
       avatar: "SC",
       verified: true,
     },
@@ -21,7 +21,7 @@ const Testimonials = () => {
       role: "Fitness Trainer",
       location: "Austin, TX",
       rating: 5,
-      text: "The sleep tracking and energy level monitoring have completely transformed how I train my clients. The insights are incredibly detailed and actionable.",
+      text: "The 7-day battery life on the Helio is perfect for my clients who don't want to worry about daily charging. The activity monitoring and sleep tracking help me design better training programs.",
       avatar: "MR",
       verified: true,
     },
@@ -30,7 +30,7 @@ const Testimonials = () => {
       role: "Working Mom",
       location: "Seattle, WA",
       rating: 5,
-      text: "Finally, a health tracker that doesn't feel like wearing a computer on my wrist. The ring is so comfortable I forget I'm wearing it, but the health insights are amazing.",
+      text: "I love my Helio Women in Rose Gold! The 10-day battery and blood pressure monitoring are game-changers. At only 10g, I forget I'm wearing it, but the health insights are incredible.",
       avatar: "EJ",
       verified: true,
     },
@@ -39,25 +39,25 @@ const Testimonials = () => {
       role: "Tech Executive",
       location: "New York, NY",
       rating: 5,
-      text: "The stress monitoring feature has been a game-changer for managing my high-pressure job. The guided breathing exercises help me stay calm during important meetings.",
+      text: "The stress monitoring and blood oxygen features on the Helio Women help me manage my high-pressure job. The Bluetooth 5.2 connectivity syncs perfectly with my phone for real-time insights.",
       avatar: "JP",
       verified: true,
     },
     {
-      name: "Dr. Maria Santos",
-      role: "Sleep Specialist",
+      name: "Lisa Martinez",
+      role: "Swim Coach",
       location: "Miami, FL",
       rating: 5,
-      text: "The sleep analysis is remarkably accurate. I use the data from Helio Ring to help my patients understand their sleep patterns and improve their sleep quality.",
-      avatar: "MS",
+      text: "The IP68 waterproof rating is no joke - I wear my Helio in the pool daily. The sleep analysis and heart rate tracking help me optimize both my training and recovery periods.",
+      avatar: "LM",
       verified: true,
     },
     {
       name: "David Kim",
-      role: "Marathon Runner",
+      role: "Parent & Runner",
       location: "Portland, OR",
       rating: 5,
-      text: "The 10-day battery life is incredible. I can track my training and recovery without worrying about charging. The blood oxygen monitoring helps optimize my performance.",
+      text: "Got the Helio Kids for my 10-year-old in Electric Blue - the parental controls and 5-day battery are perfect. The safe design gives me peace of mind while tracking his activity levels.",
       avatar: "DK",
       verified: true,
     },
@@ -114,7 +114,7 @@ const Testimonials = () => {
           ))}
         </motion.div>
 
-        {/* Testimonials Grid - Grouped by rows */}
+        {/* Testimonials Grid - Grouped by rows with ProductCard consistency */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -137,32 +137,35 @@ const Testimonials = () => {
                 transition: { duration: 0.2 }
               }}
             >
-              <Card className="p-6 h-full bg-charcoal-700/80 backdrop-blur-sm border-charcoal-600 shadow-charcoal-lg hover:shadow-gold hover:border-gold-500 transition-all duration-300 group">
-                {/* Quote Icon - Static for performance */}
-                <Quote className="h-8 w-8 text-gold-500 mb-4 opacity-80" />
+              <Card className={`relative overflow-hidden bg-gradient-to-br from-charcoal-50 to-charcoal-100 border-charcoal-200 rounded-3xl transition-all duration-300 h-full flex flex-col shadow-lg shadow-charcoal-900/10 hover:shadow-2xl hover:shadow-charcoal-900/20 hover:-translate-y-1 hover:border-gold-300`}>
                 
-                {/* Rating - Static */}
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-gold-400 fill-current" />
-                  ))}
+                {/* Quote Icon */}
+                <div className="p-8 pb-6">
+                  <Quote className="h-8 w-8 text-gold-500 mb-4 opacity-80" />
+                  
+                  {/* Rating - Consistent with ProductCard */}
+                  <div className="flex items-center mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 text-gold-500 fill-current" />
+                    ))}
+                  </div>
+
+                  {/* Testimonial Text */}
+                  <p className="text-charcoal-600 mb-6 leading-relaxed line-clamp-4">
+                    "{testimonial.text}"
+                  </p>
                 </div>
 
-                {/* Testimonial Text */}
-                <p className="text-charcoal-100 mb-6 leading-relaxed group-hover:text-charcoal-50 transition-colors">
-                  "{testimonial.text}"
-                </p>
-
-                {/* User Info */}
-                <div className="flex items-center justify-between">
+                {/* User Info - Bottom section like ProductCard */}
+                <div className="mt-auto p-8 pt-0">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full flex items-center justify-center shadow-gold">
+                    <div className="w-12 h-12 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
                       <span className="text-charcoal-800 font-semibold text-sm">
                         {testimonial.avatar}
                       </span>
                     </div>
-                    <div>
-                      <div className="font-semibold text-charcoal-50 flex items-center">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-charcoal-800 flex items-center">
                         {testimonial.name}
                         {testimonial.verified && (
                           <Badge className="ml-2 bg-gradient-to-r from-gold-400 to-gold-500 text-charcoal-800 text-xs border-none">
@@ -170,43 +173,14 @@ const Testimonials = () => {
                           </Badge>
                         )}
                       </div>
-                      <div className="text-sm text-charcoal-200">{testimonial.role}</div>
-                      <div className="text-xs text-charcoal-300">{testimonial.location}</div>
+                      <div className="text-sm text-charcoal-600">{testimonial.role}</div>
+                      <div className="text-xs text-charcoal-500">{testimonial.location}</div>
                     </div>
                   </div>
                 </div>
               </Card>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Bottom CTA - Simplified */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <p className="text-lg text-charcoal-200 mb-6">
-            Ready to join thousands of satisfied users?
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-gold-lg border-none"
-            >
-              Start Your Health Journey
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="border border-charcoal-400 hover:border-gold-500 text-charcoal-100 hover:text-charcoal-50 font-semibold py-3 px-8 rounded-lg transition-all duration-200 hover:bg-charcoal-600/50"
-            >
-              Learn More
-            </motion.button>
-          </div>
         </motion.div>
       </div>
     </section>

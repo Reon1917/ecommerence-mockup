@@ -226,26 +226,6 @@ const FeaturesGrid = () => {
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Bottom CTA - Simplified */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <p className="text-lg text-charcoal-600 mb-6">
-            Ready to experience the future of health monitoring?
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-gold-lg border-none"
-          >
-            Explore All Features
-          </motion.button>
-        </motion.div>
       </div>
     </section>
   );

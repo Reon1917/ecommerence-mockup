@@ -24,18 +24,22 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 relative">
+          <Link href="/" className="flex items-center space-x-3 flex-shrink-0 group">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 relative transition-transform duration-200 group-hover:scale-105">
               <Image
                 src="/logo/helio-logo.png"
                 alt="Helio Logo"
-                width={40}
-                height={40}
-                className="w-full h-full object-contain"
+                width={48}
+                height={48}
+                className="w-full h-full object-contain drop-shadow-lg"
                 priority
               />
+              {/* Subtle glow effect on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-gold-500/20 to-gold-400/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
             </div>
-            <span className="text-lg sm:text-xl font-bold text-charcoal-50">Helio</span>
+            <span className="text-xl sm:text-2xl font-bold text-charcoal-50 tracking-tight group-hover:text-gold-400 transition-colors duration-200">
+              Helio
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

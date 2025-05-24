@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/cart-context";
 import { 
   Heart,
   Activity,
@@ -15,62 +17,118 @@ import {
   Clock, 
   Palette,
   Award,
-  CheckCircle
+  CheckCircle,
+  ShoppingCart,
+  Check,
+  ImageIcon,
+  Star
 } from "lucide-react";
 
 const ProductShowcase = () => {
-  const specifications = [
-    {
-      icon: Clock,
-      title: "7-Day Battery Life",
-      description: "Extended usage without frequent charging",
-      color: "text-gold-500",
-      bgColor: "bg-gradient-to-br from-gold-100 to-gold-200",
-    },
-    {
-      icon: Shield,
-      title: "IP68 Waterproof",
-      description: "Swim, shower, and exercise worry-free",
-      color: "text-gold-400",
-      bgColor: "bg-gradient-to-br from-charcoal-100 to-charcoal-200",
-    },
-    {
-      icon: Smartphone,
-      title: "Bluetooth 5.0",
-      description: "Works with iOS and Android devices",
-      color: "text-gold-600",
-      bgColor: "bg-gradient-to-br from-gold-50 to-gold-100",
-    },
-    {
-      icon: Activity,
-      title: "5 Medical-Grade Sensors",
-      description: "Professional health monitoring",
-      color: "text-gold-500",
-      bgColor: "bg-gradient-to-br from-gold-200 to-charcoal-100",
-    },
-  ];
+  // Use the same product data structure as models page
+  const featuredProduct = {
+    id: 1,
+    name: "Helio",
+    description: "Essential health tracking for everyday wellness. Perfect for men who want comprehensive health monitoring without compromise.",
+    price: 299,
+    originalPrice: 349,
+    rating: 4.8,
+    reviews: 1247,
+    popular: false,
+    colors: [
+      {
+        name: "Royal Silver",
+        hex: "#C0C0C0",
+        image: "/helio-shopping-pic/helio-1-royalsilver.png"
+      },
+      {
+        name: "Matte Black",
+        hex: "#2C2C2C",
+        image: "/helio-shopping-pic/helio-1-matteblack.png"
+      }
+    ],
+    features: [
+      { name: "Heart Rate", icon: Heart, color: "text-gold-500" },
+      { name: "Sleep Tracking", icon: Moon, color: "text-gold-400" },
+      { name: "Activity Monitor", icon: Activity, color: "text-gold-600" },
+      { name: "7-Day Battery", icon: Clock, color: "text-gold-300" },
+      { name: "Waterproof", icon: Shield, color: "text-gold-500" },
+      { name: "Smart Sync", icon: Smartphone, color: "text-gold-400" }
+    ],
+    specs: [
+      { label: "Battery Life", value: "7 days" },
+      { label: "Water Resistance", value: "IP68" },
+      { label: "Connectivity", value: "Bluetooth 5.0" },
+      { label: "Sensors", value: "5 medical-grade" },
+      { label: "Weight", value: "12g" },
+      { label: "Warranty", value: "2 years" }
+    ]
+  };
 
-  const colors = [
-    { name: "Matte Black", color: "bg-charcoal-800 border-charcoal-600", popular: true },
-    { name: "Royal Silver", color: "bg-gradient-to-r from-charcoal-200 to-charcoal-300 border-charcoal-400", popular: false },
-  ];
+  const [selectedColor, setSelectedColor] = useState(0);
+  const [imageError, setImageError] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+  
+  const { addItem } = useCart();
 
-  const features = [
-    "Heart rate monitoring",
-    "Sleep tracking",
-    "Activity monitoring",
-    "Waterproof design",
-    "Smart sync",
-    "Medical-grade sensors",
-    "7-day battery life",
-    "Lightweight (12g)",
-  ];
+  // Wipe animation variants for color switching
+  const wipeVariants = {
+    initial: {
+      clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+    },
+    animate: {
+      clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+    exit: {
+      clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
+      transition: {
+        duration: 0.3,
+        ease: "easeIn",
+      },
+    },
+  };
+
+  const handleColorChange = (index) => {
+    if (index !== selectedColor) {
+      setSelectedColor(index);
+      setImageError(false);
+    }
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    
+    // Add item to cart
+    addItem(featuredProduct, selectedColor);
+    
+    // Show success state
+    setTimeout(() => {
+      setIsAdding(false);
+      setJustAdded(true);
+      
+      // Reset success state after 2 seconds
+      setTimeout(() => {
+        setJustAdded(false);
+      }, 2000);
+    }, 500);
+  };
+
+  const currentColor = featuredProduct.colors[selectedColor];
 
   return (
     <section className="py-20 bg-gradient-to-b from-charcoal-50 via-charcoal-100 to-charcoal-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left - Product Image */}
+          {/* Left - Product Image with Interactive Features */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -78,25 +136,92 @@ const ProductShowcase = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            {/* Background Elements - Simplified */}
-            <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full blur-3xl opacity-8 transform scale-110"></div>
-            
-            {/* Main Product Image - Using men's Helio model image */}
-            <motion.div
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.4 }
-              }}
-              className="relative z-10"
-            >
-              <Image
-                src="/helio-shopping-pic/helio-1-matteblack.png"
-                alt="Helio Ring - Essential Health Tracker for Men"
-                width={600}
-                height={600}
-                className="w-full h-auto max-w-lg mx-auto drop-shadow-2xl"
-              />
-            </motion.div>
+            <Card className="relative overflow-hidden bg-gradient-to-br from-charcoal-50 to-charcoal-100 border-charcoal-200 rounded-3xl p-8">
+              {/* Background glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-3xl blur-3xl opacity-8 transform scale-110 -z-10"></div>
+              
+              {/* Product Image with wipe animation */}
+              <div className="relative h-80 bg-gradient-to-br from-white to-charcoal-50 rounded-2xl overflow-hidden mb-6">
+                <div className="absolute inset-0 shadow-inner shadow-charcoal-900/5"></div>
+                
+                <motion.div
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { duration: 0.4 }
+                  }}
+                  className="relative h-full flex items-center justify-center p-8"
+                >
+                  <div className="relative w-full h-full max-w-72 max-h-72 overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`${featuredProduct.id}-${selectedColor}`}
+                        variants={wipeVariants}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        className="absolute inset-0 flex items-center justify-center"
+                      >
+                        {imageError ? (
+                          <div className="flex flex-col items-center justify-center w-full h-full text-charcoal-400">
+                            <ImageIcon className="w-20 h-20 mb-4 text-charcoal-300" />
+                            <p className="text-sm font-medium text-center text-charcoal-500">
+                              {currentColor.name}
+                            </p>
+                          </div>
+                        ) : (
+                          <Image
+                            src={currentColor.image}
+                            alt={`${featuredProduct.name} in ${currentColor.name}`}
+                            width={288}
+                            height={288}
+                            className="w-full h-full object-contain drop-shadow-lg"
+                            onError={handleImageError}
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                          />
+                        )}
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Color Swatches - Interactive */}
+              <div className="space-y-3">
+                <p className="text-xs font-medium text-charcoal-500 uppercase tracking-wide">
+                  Color: <span className="text-charcoal-700 normal-case">{currentColor.name}</span>
+                </p>
+                <div className="flex space-x-3">
+                  {featuredProduct.colors.map((color, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => handleColorChange(index)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`relative w-10 h-10 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 ${
+                        selectedColor === index 
+                          ? 'border-gold-500 ring-2 ring-gold-400/30' 
+                          : 'border-charcoal-300 hover:border-charcoal-400'
+                      }`}
+                      style={{ backgroundColor: color.hex }}
+                      aria-label={`Select ${color.name} color`}
+                    >
+                      {selectedColor === index && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute inset-0 rounded-full flex items-center justify-center"
+                        >
+                          <CheckCircle className="w-5 h-5 text-white drop-shadow-md" />
+                        </motion.div>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </Card>
           </motion.div>
 
           {/* Right - Product Details */}
@@ -112,71 +237,57 @@ const ProductShowcase = () => {
                 Essential Design
               </Badge>
               <h2 className="text-4xl lg:text-5xl font-bold text-charcoal-800 mb-6">
-                Helio for
-                <span className="block bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">Men</span>
+                {featuredProduct.name}
+                <span className="block bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">for Men</span>
               </h2>
               <p className="text-xl text-charcoal-600 leading-relaxed">
-                Essential health tracking for everyday wellness. Perfect for men who want 
-                comprehensive health monitoring without compromise. Experience professional-grade 
-                health insights in a sleek, masculine design.
+                {featuredProduct.description}
               </p>
             </div>
 
-            {/* Color Selection */}
-            <div>
-              <h3 className="text-lg font-semibold text-charcoal-800 mb-4 flex items-center">
-                <Palette className="h-5 w-5 mr-2 text-gold-500" />
-                Available Colors
-              </h3>
-              <div className="flex space-x-4">
-                {colors.map((color, index) => (
-                  <motion.div
-                    key={color.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.4 }}
-                    viewport={{ once: true }}
-                    className="relative"
-                  >
-                    <div className={`w-12 h-12 rounded-full ${color.color} border-2 cursor-pointer hover:scale-110 transition-transform duration-200 shadow-sm hover:shadow-gold`}></div>
-                    {color.popular && (
-                      <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-gold-500 to-gold-600 text-charcoal-800 text-xs px-1 py-0 border-none">
-                        Popular
-                      </Badge>
-                    )}
-                    <div className="text-xs text-center mt-2 text-charcoal-600">{color.name}</div>
-                  </motion.div>
+            {/* Rating & Reviews - Consistent with ProductCard */}
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star 
+                    key={i} 
+                    className={`h-5 w-5 ${i < Math.floor(featuredProduct.rating) ? 'text-gold-500 fill-current' : 'text-charcoal-300'}`}
+                  />
                 ))}
               </div>
+              <span className="text-lg text-charcoal-600 font-medium">
+                {featuredProduct.rating}
+              </span>
+              <span className="text-charcoal-500">
+                • {featuredProduct.reviews.toLocaleString()} reviews
+              </span>
             </div>
 
-            {/* Key Features */}
-            <div>
-              <h3 className="text-lg font-semibold text-charcoal-800 mb-4">
-                Key Features
-              </h3>
+            {/* Key Features - Consistent with ProductCard */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-charcoal-500 uppercase tracking-wide">Key Features</h4>
               <div className="grid grid-cols-2 gap-3">
-                {features.map((feature, index) => (
+                {featuredProduct.features.map((feature, index) => (
                   <motion.div
-                    key={feature}
-                    initial={{ opacity: 0, x: -20 }}
+                    key={feature.name}
+                    initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.4 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
                     viewport={{ once: true }}
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 text-charcoal-600"
                   >
-                    <CheckCircle className="h-4 w-4 text-gold-500 flex-shrink-0" />
-                    <span className="text-sm text-charcoal-700">{feature}</span>
+                    <feature.icon className="w-4 h-4 text-gold-500 flex-shrink-0" />
+                    <span className="text-sm">{feature.name}</span>
                   </motion.div>
                 ))}
               </div>
             </div>
 
-            {/* Specifications Cards */}
+            {/* Specifications Cards - Consistent styling */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {specifications.map((spec, index) => (
+              {featuredProduct.specs.slice(0, 4).map((spec, index) => (
                 <motion.div
-                  key={spec.title}
+                  key={spec.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
@@ -186,51 +297,95 @@ const ProductShowcase = () => {
                     transition: { duration: 0.2 }
                   }}
                 >
-                  <Card className="p-4 border-charcoal-300 bg-card/80 backdrop-blur-sm hover:shadow-charcoal hover:border-gold-400 transition-all duration-300 group">
-                    <div className="flex items-start space-x-3">
-                      <div className={`p-2 rounded-lg ${spec.bgColor} shadow-sm group-hover:shadow-gold transition-all duration-300`}>
-                        <spec.icon className={`h-5 w-5 ${spec.color}`} />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-charcoal-800 text-sm mb-1 group-hover:text-charcoal-900 transition-colors">
-                          {spec.title}
-                        </h4>
-                        <p className="text-xs text-charcoal-600 group-hover:text-charcoal-700 transition-colors">
-                          {spec.description}
-                        </p>
-                      </div>
+                  <Card className="p-4 border-charcoal-300 bg-gradient-to-br from-charcoal-50 to-charcoal-100 hover:shadow-lg hover:border-gold-400 transition-all duration-300 group">
+                    <div>
+                      <h4 className="font-semibold text-charcoal-800 text-sm mb-1 group-hover:text-charcoal-900 transition-colors">
+                        {spec.label}
+                      </h4>
+                      <p className="text-sm text-charcoal-600 group-hover:text-charcoal-700 transition-colors">
+                        {spec.value}
+                      </p>
                     </div>
                   </Card>
                 </motion.div>
               ))}
             </div>
 
-            {/* Pricing and CTA */}
+            {/* Pricing - Consistent with ProductCard */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
               viewport={{ once: true }}
+              className="space-y-2"
+            >
+              <div className="flex items-baseline space-x-3">
+                <span className="text-3xl font-bold text-charcoal-800">${featuredProduct.price}</span>
+                {featuredProduct.originalPrice && (
+                  <span className="text-lg text-charcoal-500 line-through">${featuredProduct.originalPrice}</span>
+                )}
+              </div>
+              {featuredProduct.originalPrice && (
+                <div className="text-gold-600 font-semibold">
+                  Save ${featuredProduct.originalPrice - featuredProduct.price}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Add to Cart Button - Consistent with ProductCard */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+              viewport={{ once: true }}
               className="space-y-4"
             >
-              {/* Pricing */}
-              <div className="flex items-baseline space-x-3">
-                <span className="text-3xl font-bold text-charcoal-800">$299</span>
-                <span className="text-lg text-charcoal-500 line-through">$349</span>
-                <Badge className="bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 border-none">
-                  Save $50
-                </Badge>
-              </div>
-              
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-gradient-gold hover:from-gold-600 hover:to-gold-500 text-charcoal-50 text-lg px-8 py-3 shadow-gold-lg border-none">
-                  Order Now - $299
-                </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-3 border-charcoal-400 text-charcoal-700 hover:bg-charcoal-200 hover:text-charcoal-800 hover:border-gold-500">
-                  View All Models
-                </Button>
-              </div>
+              <Button 
+                onClick={handleAddToCart}
+                disabled={isAdding || justAdded}
+                className={`w-full font-semibold text-lg px-8 py-4 h-14 rounded-xl transition-all duration-300 border-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 ${
+                  justAdded 
+                    ? 'bg-green-600 hover:bg-green-600 text-white shadow-lg' 
+                    : 'bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-600 hover:to-gold-500 text-charcoal-800 shadow-lg hover:shadow-xl'
+                }`}
+              >
+                <AnimatePresence mode="wait">
+                  {isAdding ? (
+                    <motion.div
+                      key="loading"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center justify-center space-x-2"
+                    >
+                      <div className="w-5 h-5 border-2 border-charcoal-800 border-t-transparent rounded-full animate-spin"></div>
+                      <span>Adding...</span>
+                    </motion.div>
+                  ) : justAdded ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center justify-center space-x-2"
+                    >
+                      <Check className="w-5 h-5" />
+                      <span>Added to Cart!</span>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="default"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="flex items-center justify-center space-x-2"
+                    >
+                      <ShoppingCart className="w-5 h-5" />
+                      <span>Add to Cart</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Button>
             </motion.div>
 
             {/* Trust Signals */}
@@ -250,8 +405,8 @@ const ProductShowcase = () => {
                 <span className="text-sm text-charcoal-600">Free Shipping</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Award className="h-4 w-4 text-gold-500" />
-                <span className="text-sm text-charcoal-600">Premium Support</span>
+                <Clock className="h-4 w-4 text-gold-500" />
+                <span className="text-sm text-charcoal-600">30-Day Returns</span>
               </div>
             </motion.div>
           </motion.div>
