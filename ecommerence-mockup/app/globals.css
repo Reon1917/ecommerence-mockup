@@ -95,8 +95,23 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    overflow-x: hidden;
+  }
+  
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    min-width: 320px; /* Minimum mobile width */
+  }
+  
+  /* Prevent horizontal overflow on all containers */
+  .container,
+  main,
+  section,
+  div {
+    max-width: 100%;
   }
 }
 
@@ -180,5 +195,20 @@
   
   .animate-shimmer {
     animation: shimmer 2s infinite;
+  }
+  
+  /* Mobile-specific overflow prevention */
+  @media (max-width: 768px) {
+    .overflow-x-hidden {
+      overflow-x: hidden !important;
+    }
+    
+    .max-w-full {
+      max-width: 100% !important;
+    }
+    
+    .min-w-0 {
+      min-width: 0 !important;
+    }
   }
 }

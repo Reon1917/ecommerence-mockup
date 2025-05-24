@@ -20,17 +20,17 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-charcoal-800/90 backdrop-blur-md border-b border-charcoal-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 min-w-0">
+    <nav className="fixed top-0 w-full z-50 bg-charcoal-800/90 backdrop-blur-md border-b border-charcoal-600 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <div className="flex justify-between items-center h-16 min-w-0 gap-2">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0 group min-w-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 relative transition-transform duration-200 group-hover:scale-105 flex-shrink-0">
+          <Link href="/" className="flex items-center space-x-2 flex-shrink-0 group min-w-0 max-w-[140px] sm:max-w-none">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 relative transition-transform duration-200 group-hover:scale-105 flex-shrink-0">
               <Image
                 src="/logo/helio-logo.png"
                 alt="Helio Logo"
-                width={64}
-                height={64}
+                width={40}
+                height={40}
                 className="w-full h-full object-contain drop-shadow-lg"
                 priority
               />
@@ -43,7 +43,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8 flex-shrink-0">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -79,11 +79,11 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Actions & Menu */}
-          <div className="flex md:hidden items-center space-x-2 flex-shrink-0">
+          <div className="flex md:hidden items-center space-x-1 flex-shrink-0">
             {/* Mobile Cart Icon */}
             <Link href="/cart" className="relative">
-              <Button variant="ghost" size="sm" className="text-charcoal-100 hover:bg-charcoal-700 hover:text-gold-400 p-2">
-                <ShoppingCart className="h-5 w-5" />
+              <Button variant="ghost" size="sm" className="text-charcoal-100 hover:bg-charcoal-700 hover:text-gold-400 p-2 h-10 w-10">
+                <ShoppingCart className="h-4 w-4" />
                 {totalItems > 0 && (
                   <span className="absolute -top-1 -right-1 bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-800 text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center min-w-[16px] text-[10px]">
                     {totalItems > 9 ? '9+' : totalItems}
@@ -96,8 +96,8 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-charcoal-100 hover:bg-charcoal-700 p-2">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="text-charcoal-100 hover:bg-charcoal-700 p-2 h-10 w-10">
+                  <Menu className="h-4 w-4" />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>

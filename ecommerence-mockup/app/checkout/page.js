@@ -235,60 +235,8 @@ export default function CheckoutPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-charcoal-800 via-charcoal-200 to-charcoal-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-12"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-charcoal-50 mb-2">Checkout</h1>
-              <p className="text-charcoal-200">
-                Complete your order for {totalItems} {totalItems === 1 ? 'item' : 'items'}
-              </p>
-            </div>
-            
-            <Link href="/cart">
-              <Button variant="ghost" className="text-charcoal-200 hover:text-gold-400 hover:bg-charcoal-700">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Cart
-              </Button>
-            </Link>
-          </div>
-
-          {/* Progress Steps */}
-          <div className="flex items-center space-x-4 mb-8">
-            {[1, 2, 3].map((step) => (
-              <div key={step} className="flex items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step < currentStep 
-                    ? 'bg-green-600 text-white' 
-                    : step === currentStep 
-                      ? 'bg-gradient-gold text-charcoal-800' 
-                      : 'bg-charcoal-300 text-charcoal-600'
-                }`}>
-                  {step < currentStep ? <Check className="w-4 h-4" /> : step}
-                </div>
-                <span className={`ml-2 text-sm ${
-                  step <= currentStep ? 'text-charcoal-100' : 'text-charcoal-400'
-                }`}>
-                  {step === 1 ? 'Shipping' : step === 2 ? 'Payment' : 'Review'}
-                </span>
-                {step < 3 && <ArrowRight className="w-4 h-4 mx-4 text-charcoal-400" />}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Checkout Form */}
-          <div className="lg:col-span-2">
-            <Card className="bg-charcoal-100/80 backdrop-blur-sm border-charcoal-300 rounded-2xl p-6">
+    return (    <div className="min-h-screen bg-gradient-to-b from-charcoal-800 via-charcoal-200 to-charcoal-50 overflow-x-hidden">      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">        {/* Header */}        <motion.div          initial={{ opacity: 0, y: 30 }}          animate={{ opacity: 1, y: 0 }}          transition={{ duration: 0.8 }}          className="mb-8 sm:mb-12"        >          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">            <div className="min-w-0">              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-charcoal-50 mb-2">Checkout</h1>              <p className="text-charcoal-200 text-sm sm:text-base">                Complete your order for {totalItems} {totalItems === 1 ? 'item' : 'items'}              </p>            </div>                        <Link href="/cart" className="flex-shrink-0">              <Button variant="ghost" className="text-charcoal-200 hover:text-gold-400 hover:bg-charcoal-700 text-sm sm:text-base">                <ArrowLeft className="w-4 h-4 mr-2" />                Back to Cart              </Button>            </Link>          </div>          {/* Progress Steps */}          <div className="flex items-center justify-center sm:justify-start space-x-2 sm:space-x-4 mb-6 sm:mb-8 overflow-x-auto pb-2">            {[1, 2, 3].map((step) => (              <div key={step} className="flex items-center flex-shrink-0">                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${                  step < currentStep                     ? 'bg-green-600 text-white'                     : step === currentStep                       ? 'bg-gradient-gold text-charcoal-800'                       : 'bg-charcoal-300 text-charcoal-600'                }`}>                  {step < currentStep ? <Check className="w-4 h-4" /> : step}                </div>                <span className={`ml-2 text-xs sm:text-sm whitespace-nowrap ${                  step <= currentStep ? 'text-charcoal-100' : 'text-charcoal-400'                }`}>                  {step === 1 ? 'Shipping' : step === 2 ? 'Payment' : 'Review'}                </span>                {step < 3 && <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 mx-2 sm:mx-4 text-charcoal-400" />}              </div>            ))}          </div>        </motion.div>        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                    {/* Checkout Form */}          <div className="lg:col-span-2 min-w-0">            <Card className="bg-charcoal-100/80 backdrop-blur-sm border-charcoal-300 rounded-2xl p-4 sm:p-6">
               <AnimatePresence mode="wait">
                 {/* Step 1: Shipping Information */}
                 {currentStep === 1 && (
@@ -304,106 +252,10 @@ export default function CheckoutPage() {
                       <h2 className="text-xl font-semibold text-charcoal-800">Shipping Information</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                      <div>
-                        <Label htmlFor="firstName" className="text-charcoal-700">First Name</Label>
-                        <Input
-                          id="firstName"
-                          value={formData.firstName}
-                          onChange={(e) => handleInputChange('firstName', e.target.value)}
-                          className={`mt-1 ${errors.firstName ? 'border-red-500' : ''}`}
-                          placeholder="John"
-                        />
-                        {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="lastName" className="text-charcoal-700">Last Name</Label>
-                        <Input
-                          id="lastName"
-                          value={formData.lastName}
-                          onChange={(e) => handleInputChange('lastName', e.target.value)}
-                          className={`mt-1 ${errors.lastName ? 'border-red-500' : ''}`}
-                          placeholder="Doe"
-                        />
-                        {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
-                      </div>
-                    </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">                      <div>                        <Label htmlFor="firstName" className="text-charcoal-700 text-sm">First Name</Label>                        <Input                          id="firstName"                          value={formData.firstName}                          onChange={(e) => handleInputChange('firstName', e.target.value)}                          className={`mt-1 ${errors.firstName ? 'border-red-500' : ''}`}                          placeholder="John"                        />                        {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}                      </div>                                            <div>                        <Label htmlFor="lastName" className="text-charcoal-700 text-sm">Last Name</Label>                        <Input                          id="lastName"                          value={formData.lastName}                          onChange={(e) => handleInputChange('lastName', e.target.value)}                          className={`mt-1 ${errors.lastName ? 'border-red-500' : ''}`}                          placeholder="Doe"                        />                        {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}                      </div>                    </div>                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">                      <div>                        <Label htmlFor="email" className="text-charcoal-700 text-sm">Email</Label>                        <Input                          id="email"                          type="email"                          value={formData.email}                          onChange={(e) => handleInputChange('email', e.target.value)}                          className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}                          placeholder="john@example.com"                        />                        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}                      </div>                                            <div>                        <Label htmlFor="phone" className="text-charcoal-700 text-sm">Phone</Label>                        <Input                          id="phone"                          value={formData.phone}                          onChange={(e) => handleInputChange('phone', e.target.value)}                          className={`mt-1 ${errors.phone ? 'border-red-500' : ''}`}                          placeholder="(555) 123-4567"                        />                        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}                      </div>                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                      <div>
-                        <Label htmlFor="email" className="text-charcoal-700">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}
-                          placeholder="john@example.com"
-                        />
-                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="phone" className="text-charcoal-700">Phone</Label>
-                        <Input
-                          id="phone"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className={`mt-1 ${errors.phone ? 'border-red-500' : ''}`}
-                          placeholder="(555) 123-4567"
-                        />
-                        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-                      </div>
-                    </div>
-
-                    <div className="mb-6">
-                      <Label htmlFor="address" className="text-charcoal-700">Address</Label>
-                      <Input
-                        id="address"
-                        value={formData.address}
-                        onChange={(e) => handleInputChange('address', e.target.value)}
-                        className={`mt-1 ${errors.address ? 'border-red-500' : ''}`}
-                        placeholder="123 Main Street"
-                      />
-                      {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                      <div>
-                        <Label htmlFor="city" className="text-charcoal-700">City</Label>
-                        <Input
-                          id="city"
-                          value={formData.city}
-                          onChange={(e) => handleInputChange('city', e.target.value)}
-                          className={`mt-1 ${errors.city ? 'border-red-500' : ''}`}
-                          placeholder="New York"
-                        />
-                        {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="state" className="text-charcoal-700">State</Label>
-                        <Input
-                          id="state"
-                          value={formData.state}
-                          onChange={(e) => handleInputChange('state', e.target.value)}
-                          className={`mt-1 ${errors.state ? 'border-red-500' : ''}`}
-                          placeholder="NY"
-                        />
-                        {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="zipCode" className="text-charcoal-700">ZIP Code</Label>
-                        <Input
-                          id="zipCode"
-                          value={formData.zipCode}
-                          onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                          className={`mt-1 ${errors.zipCode ? 'border-red-500' : ''}`}
-                          placeholder="10001"
-                        />
-                        {errors.zipCode && <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>}
+                                        <div className="mb-6">                      <Label htmlFor="address" className="text-charcoal-700 text-sm">Address</Label>                      <Input                        id="address"                        value={formData.address}                        onChange={(e) => handleInputChange('address', e.target.value)}                        className={`mt-1 ${errors.address ? 'border-red-500' : ''}`}                        placeholder="123 Main Street"                      />                      {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}                    </div>                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">                      <div>                        <Label htmlFor="city" className="text-charcoal-700 text-sm">City</Label>                        <Input                          id="city"                          value={formData.city}                          onChange={(e) => handleInputChange('city', e.target.value)}                          className={`mt-1 ${errors.city ? 'border-red-500' : ''}`}                          placeholder="New York"                        />                        {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}                      </div>                                            <div>                        <Label htmlFor="state" className="text-charcoal-700 text-sm">State</Label>                        <Input                          id="state"                          value={formData.state}                          onChange={(e) => handleInputChange('state', e.target.value)}                          className={`mt-1 ${errors.state ? 'border-red-500' : ''}`}                          placeholder="NY"                        />                        {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}                      </div>                                            <div>                        <Label htmlFor="zipCode" className="text-charcoal-700 text-sm">ZIP Code</Label>
+                                                <Input                          id="zipCode"                          value={formData.zipCode}                          onChange={(e) => handleInputChange('zipCode', e.target.value)}                          className={`mt-1 ${errors.zipCode ? 'border-red-500' : ''}`}                          placeholder="10001"                        />                        {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
                       </div>
                     </div>
 
@@ -433,58 +285,7 @@ export default function CheckoutPage() {
                       <h2 className="text-xl font-semibold text-charcoal-800">Payment Information</h2>
                     </div>
 
-                    <div className="mb-6">
-                      <Label htmlFor="cardNumber" className="text-charcoal-700">Card Number</Label>
-                      <Input
-                        id="cardNumber"
-                        value={formData.cardNumber}
-                        onChange={(e) => handleInputChange('cardNumber', formatCardNumber(e.target.value))}
-                        className={`mt-1 ${errors.cardNumber ? 'border-red-500' : ''}`}
-                        placeholder="1234 5678 9012 3456"
-                        maxLength={19}
-                      />
-                      {errors.cardNumber && <p className="text-red-500 text-sm mt-1">{errors.cardNumber}</p>}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                      <div>
-                        <Label htmlFor="expiryDate" className="text-charcoal-700">Expiry Date</Label>
-                        <Input
-                          id="expiryDate"
-                          value={formData.expiryDate}
-                          onChange={(e) => handleInputChange('expiryDate', formatExpiryDate(e.target.value))}
-                          className={`mt-1 ${errors.expiryDate ? 'border-red-500' : ''}`}
-                          placeholder="MM/YY"
-                          maxLength={5}
-                        />
-                        {errors.expiryDate && <p className="text-red-500 text-sm mt-1">{errors.expiryDate}</p>}
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="cvv" className="text-charcoal-700">CVV</Label>
-                        <Input
-                          id="cvv"
-                          value={formData.cvv}
-                          onChange={(e) => handleInputChange('cvv', e.target.value.replace(/\D/g, ''))}
-                          className={`mt-1 ${errors.cvv ? 'border-red-500' : ''}`}
-                          placeholder="123"
-                          maxLength={4}
-                        />
-                        {errors.cvv && <p className="text-red-500 text-sm mt-1">{errors.cvv}</p>}
-                      </div>
-                    </div>
-
-                    <div className="mb-8">
-                      <Label htmlFor="cardName" className="text-charcoal-700">Cardholder Name</Label>
-                      <Input
-                        id="cardName"
-                        value={formData.cardName}
-                        onChange={(e) => handleInputChange('cardName', e.target.value)}
-                        className={`mt-1 ${errors.cardName ? 'border-red-500' : ''}`}
-                        placeholder="John Doe"
-                      />
-                      {errors.cardName && <p className="text-red-500 text-sm mt-1">{errors.cardName}</p>}
-                    </div>
+                                        <div className="mb-6">                      <Label htmlFor="cardNumber" className="text-charcoal-700 text-sm">Card Number</Label>                      <Input                        id="cardNumber"                        value={formData.cardNumber}                        onChange={(e) => handleInputChange('cardNumber', formatCardNumber(e.target.value))}                        className={`mt-1 ${errors.cardNumber ? 'border-red-500' : ''}`}                        placeholder="1234 5678 9012 3456"                        maxLength={19}                      />                      {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber}</p>}                    </div>                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">                      <div>                        <Label htmlFor="expiryDate" className="text-charcoal-700 text-sm">Expiry Date</Label>                        <Input                          id="expiryDate"                          value={formData.expiryDate}                          onChange={(e) => handleInputChange('expiryDate', formatExpiryDate(e.target.value))}                          className={`mt-1 ${errors.expiryDate ? 'border-red-500' : ''}`}                          placeholder="MM/YY"                          maxLength={5}                        />                        {errors.expiryDate && <p className="text-red-500 text-xs mt-1">{errors.expiryDate}</p>}                      </div>                                            <div>                        <Label htmlFor="cvv" className="text-charcoal-700 text-sm">CVV</Label>                        <Input                          id="cvv"                          value={formData.cvv}                          onChange={(e) => handleInputChange('cvv', e.target.value.replace(/\D/g, ''))}                          className={`mt-1 ${errors.cvv ? 'border-red-500' : ''}`}                          placeholder="123"                          maxLength={4}                        />                        {errors.cvv && <p className="text-red-500 text-xs mt-1">{errors.cvv}</p>}                      </div>                    </div>                    <div className="mb-8">                      <Label htmlFor="cardName" className="text-charcoal-700 text-sm">Cardholder Name</Label>                      <Input                        id="cardName"                        value={formData.cardName}                        onChange={(e) => handleInputChange('cardName', e.target.value)}                        className={`mt-1 ${errors.cardName ? 'border-red-500' : ''}`}                        placeholder="John Doe"                      />                      {errors.cardName && <p className="text-red-500 text-xs mt-1">{errors.cardName}</p>}                    </div>
 
                     <div className="flex justify-between">
                       <Button 
@@ -575,76 +376,11 @@ export default function CheckoutPage() {
             </Card>
           </div>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
-            <Card className="bg-charcoal-100/80 backdrop-blur-sm border-charcoal-300 rounded-2xl p-6 sticky top-24">
-              <h2 className="text-xl font-semibold text-charcoal-800 mb-6">Order Summary</h2>
+                    {/* Order Summary */}          <div className="lg:col-span-1 min-w-0">            <Card className="bg-charcoal-100/80 backdrop-blur-sm border-charcoal-300 rounded-2xl p-4 sm:p-6 lg:sticky lg:top-24">              <h2 className="text-lg sm:text-xl font-semibold text-charcoal-800 mb-4 sm:mb-6">Order Summary</h2>
               
-              {/* Items */}
-              <div className="space-y-4 mb-6">
-                {items.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-charcoal-50 to-charcoal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        className="w-10 h-10 object-contain"
-                        width={40}
-                        height={40}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-charcoal-800 truncate">{item.name}</p>
-                      <p className="text-xs text-charcoal-600">{item.color} • Qty: {item.quantity}</p>
-                    </div>
-                    <div className="text-sm font-medium text-charcoal-800">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                            {/* Items */}              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">                {items.map((item) => (                  <div key={item.id} className="flex items-center space-x-3">                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-charcoal-50 to-charcoal-100 rounded-lg flex items-center justify-center flex-shrink-0">                      <Image                        src={item.image}                        alt={item.name}                        className="w-8 h-8 sm:w-10 sm:h-10 object-contain"                        width={40}                        height={40}                      />                    </div>                    <div className="flex-1 min-w-0">                      <p className="text-xs sm:text-sm font-medium text-charcoal-800 truncate">{item.name}</p>                      <p className="text-xs text-charcoal-600">{item.color} • Qty: {item.quantity}</p>                    </div>                    <div className="text-xs sm:text-sm font-medium text-charcoal-800 flex-shrink-0">                      ${(item.price * item.quantity).toFixed(2)}                    </div>                  </div>                ))}              </div>
               
-              <div className="space-y-3 mb-6 border-t border-charcoal-200 pt-4">
-                <div className="flex justify-between text-charcoal-600">
-                  <span>Subtotal</span>
-                  <span>${totalPrice.toFixed(2)}</span>
-                </div>
-                
-                {totalSavings > 0 && (
-                  <div className="flex justify-between text-green-600">
-                    <span>Savings</span>
-                    <span>-${totalSavings.toFixed(2)}</span>
-                  </div>
-                )}
-                
-                <div className="flex justify-between text-charcoal-600">
-                  <span>Shipping</span>
-                  <span className="text-green-600 font-medium">Free</span>
-                </div>
-                
-                <div className="border-t border-charcoal-200 pt-3">
-                  <div className="flex justify-between text-lg font-bold text-charcoal-800">
-                    <span>Total</span>
-                    <span>${totalPrice.toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Trust Signals */}
-              <div className="space-y-3 text-sm text-charcoal-600">
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-4 h-4 text-gold-500" />
-                  <span>256-bit SSL encryption</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Truck className="w-4 h-4 text-gold-500" />
-                  <span>Free 2-day shipping</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Package className="w-4 h-4 text-gold-500" />
-                  <span>30-day return policy</span>
-                </div>
-              </div>
+                            <div className="space-y-3 mb-4 sm:mb-6 border-t border-charcoal-200 pt-3 sm:pt-4">                <div className="flex justify-between text-charcoal-600 text-sm">                  <span>Subtotal</span>                  <span>${totalPrice.toFixed(2)}</span>                </div>                                {totalSavings > 0 && (                  <div className="flex justify-between text-green-600 text-sm">                    <span>Savings</span>                    <span>-${totalSavings.toFixed(2)}</span>                  </div>                )}                                <div className="flex justify-between text-charcoal-600 text-sm">                  <span>Shipping</span>                  <span className="text-green-600 font-medium">Free</span>                </div>                                <div className="border-t border-charcoal-200 pt-3">                  <div className="flex justify-between text-base sm:text-lg font-bold text-charcoal-800">                    <span>Total</span>                    <span>${totalPrice.toFixed(2)}</span>                  </div>                </div>              </div>              {/* Trust Signals */}              <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-charcoal-600">                <div className="flex items-center space-x-2">                  <Shield className="w-4 h-4 text-gold-500 flex-shrink-0" />                  <span>256-bit SSL encryption</span>                </div>                <div className="flex items-center space-x-2">                  <Truck className="w-4 h-4 text-gold-500 flex-shrink-0" />                  <span>Free 2-day shipping</span>                </div>                <div className="flex items-center space-x-2">                  <Package className="w-4 h-4 text-gold-500 flex-shrink-0" />                  <span>30-day return policy</span>                </div>              </div>
             </Card>
           </div>
         </div>
